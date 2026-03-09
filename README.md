@@ -9,53 +9,20 @@ A visual, drag-and-drop course authoring and playing platform built natively on 
 - **Robust State Management**: Tracks student progress, resilient to page reloads, and recovers from "zombie" states (deleted nodes).
 - **Native Frappe Integration**: Utilizes standard Frappe DocTypes (`Course`, `Course Enrollment`), file uploads, routing, and access control.
 
-## Installation
+## How to Run and Access the Course Creator
 
-This assumes you already have a working Frappe Bench setup.
-
-1. **Get the App**: 
-   From your bench directory, run:
+1. Clone the directory to your local machine.
+2. Open your terminal and navigate to the frappe-bench directory:
    ```bash
-   bench get-app https://github.com/neelparekh9/frappe-framework.git
+   cd frappe
+   cd frappe-bench
    ```
-
-2. **Install on your Site**:
-   Replace `your-site.local` with your actual site name:
+3. Start the bench server:
    ```bash
-   bench --site your-site.local install-app test_project
+   bench start
    ```
-
-3. **Build Frontend Assets**:
-   Since the Vue frontend needs to be compiled:
-   ```bash
-   bench build --app test_project
-   ```
-
-4. **Clear Cache & Restart**:
-   ```bash
-   bench clear-cache
-   bench restart
-   ```
-
-## How to Access the Course Creator
-
-### 1. Building a Course
-1. Log into the Frappe Desk as an Administrator or System Manager.
-2. Use the search bar to go to the **Course List**.
-3. Create a **New Course**. Give it a Title and save it.
-4. Click the **"Open Builder"** button in the top right corner.
-5. You are now in the Visual Builder!
-   - Drag components from the left sidebar onto the canvas.
-   - Click any component to open its configuration modal (upload files, set URLs).
-   - Draw connections (arrows) between the components to define the flow.
-   - Click the **Save** button in the top right when you are done.
-
-### 2. Taking a Course (Student View)
-1. Go to the **Course Enrollment List**.
-2. Create a **New Course Enrollment**.
-3. Select a **Student** (a Frappe User) and the **Course** you just built.
-4. Save the record.
-5. Click the **"Open Player"** button in the top right corner. The player will launch and guide the user through the defined steps!
+4. Once the server is running, access the course creator by visiting this link:
+   [http://127.0.0.1:8001/desk/course/Test%20Course](http://127.0.0.1:8001/desk/course/Test%20Course)
 
 ## Tech Stack
 - **Backend**: Python, MariaDB, Frappe Framework
