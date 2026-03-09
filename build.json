@@ -1,0 +1,9 @@
+    "source": [
+        "test_project/public/js/activity_builder.bundle.js",
+        "test_project/public/js/course_player.bundle.js"
+    ],
+    "output": {
+        "test_project/public/js/activity_builder.bundle.js": "test_project/public/dist/js/activity_builder.bundle.js",
+        "test_project/public/js/course_player.bundle.js": "test_project/public/dist/js/course_player.bundle.js"
+    }
+}
