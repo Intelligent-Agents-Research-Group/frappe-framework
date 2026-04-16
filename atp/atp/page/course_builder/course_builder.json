@@ -1,0 +1,19 @@
+{
+    "content": "Start building your course flow here.",
+    "creation": "2024-05-22 13:46:27.189539",
+    "docstatus": 0,
+    "doctype": "Page",
+    "idx": 0,
+    "modified": "2026-04-10 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "course_builder",
+    "owner": "Administrator",
+    "page_name": "course_builder",
+    "roles": [
+        {"role": "System Manager"},
+        {"role": "ATP Educator"}
+    ],
+    "standard": "Yes",
+    "title": "Course Builder"
+}

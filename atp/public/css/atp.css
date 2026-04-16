@@ -1,0 +1,1049 @@
+/* ============================================================
+   ATP — Adaptive Training Platform
+   App-level Frappe Desk theme overrides
+   Design language: clean utility aesthetic, blue primary,
+   generous whitespace, ALL-CAPS section labels, card grid.
+   ============================================================ */
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --atp-blue:        #3b82f6;
+  --atp-blue-dark:   #2563eb;
+  --atp-blue-darker: #1d4ed8;
+  --atp-blue-light:  #eff6ff;
+  --atp-blue-muted:  #dbeafe;
+
+  --atp-gray-50:  #f9fafb;
+  --atp-gray-100: #f3f4f6;
+  --atp-gray-200: #e5e7eb;
+  --atp-gray-300: #d1d5db;
+  --atp-gray-500: #6b7280;
+  --atp-gray-600: #4b5563;
+  --atp-gray-700: #374151;
+  --atp-gray-900: #111827;
+
+  --atp-red:   #ef4444;
+  --atp-green: #22c55e;
+
+  --atp-radius: 6px;
+  --atp-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --atp-shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+
+  /* Card / panel background — white in light mode */
+  --atp-card-bg: #ffffff;
+
+  /* App background */
+  --atp-bg: var(--atp-gray-50);
+
+  /* Badge color tokens — overridden in dark mode block below */
+  --atp-badge-inprogress-bg: #fef9c3;
+  --atp-badge-inprogress-fg: #854d0e;
+  --atp-badge-completed-bg:  #dcfce7;
+  --atp-badge-completed-fg:  #166534;
+  --atp-quiz-pass-bg:        #dcfce7;
+  --atp-quiz-pass-fg:        #166534;
+  --atp-quiz-retry-bg:       #fef3c7;
+  --atp-quiz-retry-fg:       #92400e;
+}
+
+/* ── Page Background ────────────────────────────────────────── */
+body.desk-is-open .page-wrapper,
+.page-wrapper {
+  background: var(--atp-gray-50);
+}
+
+/* ── Page Header ────────────────────────────────────────────── */
+.page-head {
+  background: var(--atp-card-bg) !important;
+  border-bottom: 1px solid var(--atp-gray-200) !important;
+  box-shadow: none !important;
+}
+
+.page-head .title-area .page-title .title-text,
+.page-head .title-area h3 {
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: var(--atp-gray-900) !important;
+}
+
+/* ── Sidebar ────────────────────────────────────────────────── */
+.desk-sidebar {
+  background: var(--atp-card-bg) !important;
+  border-right: 1px solid var(--atp-gray-200) !important;
+}
+
+.desk-sidebar .sidebar-item a,
+.desk-sidebar .sidebar-item span {
+  color: var(--atp-blue) !important;
+  font-size: 0.875rem;
+}
+
+.desk-sidebar .sidebar-item.selected > a,
+.desk-sidebar .sidebar-item.active > a {
+  background: var(--atp-blue-light) !important;
+  color: var(--atp-blue-dark) !important;
+  font-weight: 600 !important;
+  border-left: 3px solid var(--atp-blue) !important;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.btn-primary,
+button.btn-primary,
+a.btn-primary {
+  background-color: var(--atp-blue) !important;
+  border-color: var(--atp-blue) !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  border-radius: var(--atp-radius) !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--atp-blue-dark) !important;
+  border-color: var(--atp-blue-dark) !important;
+}
+
+.btn-default,
+.btn-secondary {
+  background-color: var(--atp-card-bg) !important;
+  border: 1px solid var(--atp-gray-300) !important;
+  color: var(--atp-gray-700) !important;
+  border-radius: var(--atp-radius) !important;
+  font-weight: 500 !important;
+}
+
+.btn-default:hover {
+  background-color: var(--atp-gray-50) !important;
+  border-color: var(--atp-gray-400, #9ca3af) !important;
+}
+
+.btn-danger {
+  background-color: var(--atp-red) !important;
+  border-color: var(--atp-red) !important;
+  color: #ffffff !important;
+  border-radius: var(--atp-radius) !important;
+}
+
+/* ── Form Controls ──────────────────────────────────────────── */
+.frappe-control .control-label,
+.form-group label,
+.control-label {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: var(--atp-gray-600) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+}
+
+.frappe-control input,
+.frappe-control select,
+.frappe-control textarea,
+input.form-control,
+select.form-control,
+textarea.form-control {
+  border: 1px solid var(--atp-gray-300) !important;
+  border-radius: var(--atp-radius) !important;
+  background: var(--atp-card-bg) !important;
+  color: var(--atp-gray-900) !important;
+  font-size: 0.875rem !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.frappe-control input:focus,
+.frappe-control select:focus,
+.frappe-control textarea:focus,
+input.form-control:focus,
+select.form-control:focus,
+textarea.form-control:focus {
+  border-color: var(--atp-blue) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+  outline: none !important;
+}
+
+/* ── Section Headings ───────────────────────────────────────── */
+.form-section .section-head,
+.section-head {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--atp-gray-500) !important;
+  border-bottom: 1px solid var(--atp-gray-200) !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* ── List View ──────────────────────────────────────────────── */
+.list-row {
+  background: var(--atp-card-bg) !important;
+  border: 1px solid var(--atp-gray-200) !important;
+  border-radius: var(--atp-radius) !important;
+  margin-bottom: 4px !important;
+  transition: box-shadow 0.15s ease !important;
+}
+
+.list-row:hover {
+  box-shadow: var(--atp-shadow-md) !important;
+  border-color: var(--atp-blue-muted) !important;
+}
+
+.list-subject .level-item a {
+  font-weight: 600 !important;
+  color: var(--atp-blue-dark) !important;
+}
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.frappe-card {
+  border: 1px solid var(--atp-gray-200) !important;
+  border-radius: var(--atp-radius) !important;
+  box-shadow: var(--atp-shadow) !important;
+  background: var(--atp-card-bg) !important;
+}
+
+/* ── Modals / Dialogs ───────────────────────────────────────── */
+.modal-dialog .modal-content {
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.12), 0 10px 10px -5px rgba(0,0,0,0.06) !important;
+}
+
+.modal-header {
+  background: var(--atp-card-bg) !important;
+  border-bottom: 1px solid var(--atp-gray-200) !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.modal-title {
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  color: var(--atp-gray-900) !important;
+}
+
+.modal-footer {
+  background: var(--atp-gray-50) !important;
+  border-top: 1px solid var(--atp-gray-200) !important;
+  border-radius: 0 0 8px 8px !important;
+}
+
+/* ── Navbar ─────────────────────────────────────────────────── */
+.navbar {
+  background: var(--atp-card-bg) !important;
+  border-bottom: 1px solid var(--atp-gray-200) !important;
+  box-shadow: none !important;
+}
+
+.navbar .navbar-brand {
+  font-weight: 700 !important;
+  color: var(--atp-gray-900) !important;
+}
+
+/* ── Indicators / Badges ────────────────────────────────────── */
+.indicator.blue, .indicator-pill.blue {
+  background: var(--atp-blue-light) !important;
+  color: var(--atp-blue-dark) !important;
+  border: 1px solid var(--atp-blue-muted) !important;
+}
+
+/* ── ATP Custom Page Shared Layout ─────────────────────────── */
+.atp-page {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--atp-gray-50);
+  min-height: 100%;
+}
+
+.atp-page-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.5rem;
+  height: 48px;
+  background: var(--atp-card-bg);
+  border-bottom: 1px solid var(--atp-gray-200);
+}
+
+.atp-page-header .back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--atp-gray-100);
+  border: 1px solid var(--atp-gray-200);
+  border-radius: var(--atp-radius);
+  color: var(--atp-gray-700);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.atp-page-header .back-btn:hover {
+  background: var(--atp-gray-200);
+}
+
+.atp-page-header .page-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--atp-gray-900);
+  margin: 0;
+}
+
+.atp-page-body {
+  padding: 2rem 1.5rem;
+}
+
+/* ── ATP Card Grid ──────────────────────────────────────────── */
+.atp-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+
+.atp-course-card {
+  background: var(--atp-card-bg);
+  border: 1px solid var(--atp-gray-200);
+  border-radius: var(--atp-radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.atp-course-card:hover {
+  box-shadow: var(--atp-shadow-md);
+  border-color: var(--atp-blue-muted);
+}
+
+.atp-course-card .card-thumb {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: var(--atp-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: var(--atp-gray-500);
+  overflow: hidden;
+}
+
+.atp-course-card .card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.atp-course-card .card-body {
+  padding: 0.75rem;
+}
+
+.atp-course-card .card-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--atp-gray-900);
+  margin: 0 0 0.4rem 0;
+  line-height: 1.3;
+}
+
+.atp-course-card .card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Status Badges ──────────────────────────────────────────── */
+.atp-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.atp-badge-notstarted {
+  background: var(--atp-gray-100);
+  color: var(--atp-gray-600);
+}
+
+.atp-badge-inprogress {
+  background: var(--atp-badge-inprogress-bg);
+  color: var(--atp-badge-inprogress-fg);
+}
+
+.atp-badge-completed {
+  background: var(--atp-badge-completed-bg);
+  color: var(--atp-badge-completed-fg);
+}
+
+/* ── Progress Bar ───────────────────────────────────────────── */
+.atp-progress-bar {
+  height: 4px;
+  background: var(--atp-gray-200);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.atp-progress-bar .fill {
+  height: 100%;
+  background: var(--atp-blue);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+/* ── ATP Action Buttons (in-card) ───────────────────────────── */
+.atp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--atp-radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+
+.atp-btn-primary {
+  background: var(--atp-blue);
+  color: #ffffff;
+}
+
+.atp-btn-primary:hover {
+  background: var(--atp-blue-dark);
+  color: #ffffff;
+}
+
+.atp-btn-outline {
+  background: transparent;
+  color: var(--atp-blue);
+  border: 1px solid var(--atp-blue-muted);
+}
+
+.atp-btn-outline:hover {
+  background: var(--atp-blue-light);
+}
+
+/* ── ATP Profile Sidebar ────────────────────────────────────── */
+.atp-profile-panel {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.atp-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--atp-gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--atp-gray-600);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.atp-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.atp-profile-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--atp-gray-900);
+  margin-bottom: 0.75rem;
+}
+
+.atp-profile-links a {
+  display: block;
+  color: var(--atp-blue);
+  font-size: 0.875rem;
+  text-decoration: none;
+  padding: 0.2rem 0;
+  cursor: pointer;
+}
+
+.atp-profile-links a:hover {
+  text-decoration: underline;
+}
+
+/* ── ATP Section Label ──────────────────────────────────────── */
+.atp-section-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--atp-gray-600);
+  margin-bottom: 1rem;
+}
+
+/* ── ATP Table ──────────────────────────────────────────────── */
+.atp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.atp-table th {
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--atp-gray-500);
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--atp-gray-200);
+}
+
+.atp-table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--atp-gray-100);
+  color: var(--atp-gray-700);
+}
+
+.atp-table tr:hover td {
+  background: var(--atp-gray-50);
+}
+
+/* ── ATP Tabs ───────────────────────────────────────────────── */
+.atp-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--atp-gray-200);
+  margin-bottom: 1.5rem;
+}
+
+.atp-tab {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--atp-gray-500);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.atp-tab:hover {
+  color: var(--atp-gray-700);
+}
+
+.atp-tab.active {
+  color: var(--atp-blue);
+  border-bottom-color: var(--atp-blue);
+}
+
+/* ── ATP Form Row ───────────────────────────────────────────── */
+.atp-form-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.atp-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.atp-form-field label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--atp-gray-600);
+}
+
+.atp-input {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--atp-gray-300);
+  border-radius: var(--atp-radius);
+  font-size: 0.875rem;
+  color: var(--atp-gray-900);
+  background: var(--atp-card-bg);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.atp-input:focus {
+  outline: none;
+  border-color: var(--atp-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.atp-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.atp-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  padding-right: 2rem;
+}
+
+/* ── Builder Config Panel ───────────────────────────────────── */
+.builder-config-panel {
+  width: 260px;
+  background: var(--atp-card-bg);
+  border-right: 1px solid var(--atp-gray-200);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.builder-config-panel .panel-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--atp-gray-200);
+  flex-shrink: 0;
+}
+
+.builder-config-panel .panel-tab {
+  flex: 1;
+  padding: 0.6rem 0.25rem;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--atp-gray-500);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s;
+}
+
+.builder-config-panel .panel-tab.active {
+  color: var(--atp-blue);
+  border-bottom-color: var(--atp-blue);
+}
+
+.builder-config-panel .panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+/* ── Env background grid ────────────────────────────────────── */
+.env-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.env-option {
+  aspect-ratio: 4/3;
+  border-radius: var(--atp-radius);
+  border: 2px solid var(--atp-gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: var(--atp-gray-700);
+  transition: border-color 0.15s, background 0.15s;
+  user-select: none;
+}
+
+.env-option:hover {
+  border-color: var(--atp-blue-muted);
+  background: var(--atp-blue-light);
+  color: var(--atp-blue-dark);
+}
+
+.env-option.selected {
+  border-color: var(--atp-blue);
+  background: var(--atp-blue-light);
+  color: var(--atp-blue-dark);
+}
+
+/* ── Agent card ─────────────────────────────────────────────── */
+.agent-card {
+  background: var(--atp-gray-50);
+  border: 1px solid var(--atp-gray-200);
+  border-radius: var(--atp-radius);
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.agent-card .agent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--atp-gray-700);
+}
+
+.agent-card .remove-btn {
+  background: none;
+  border: none;
+  color: var(--atp-gray-400, #9ca3af);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  line-height: 1;
+}
+
+.agent-card .remove-btn:hover {
+  color: var(--atp-red);
+}
+
+/* ── Add Agent button ───────────────────────────────────────── */
+.add-agent-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background: transparent;
+  border: 1px dashed var(--atp-gray-300);
+  border-radius: var(--atp-radius);
+  color: var(--atp-blue);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  margin-top: 0.5rem;
+}
+
+.add-agent-btn:hover {
+  background: var(--atp-blue-light);
+  border-color: var(--atp-blue-muted);
+}
+
+/* ── Completion Screen ──────────────────────────────────────── */
+.atp-completion {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.atp-completion .completion-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.atp-completion h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--atp-gray-900);
+  margin-bottom: 0.5rem;
+}
+
+.atp-completion p {
+  color: var(--atp-gray-600);
+  margin-bottom: 1.5rem;
+}
+
+/* ── Quiz in player ─────────────────────────────────────────── */
+.quiz-question {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--atp-gray-50);
+  border: 1px solid var(--atp-gray-200);
+  border-radius: var(--atp-radius);
+}
+
+.quiz-question .q-text {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--atp-gray-900);
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--atp-gray-700);
+}
+
+.quiz-option input[type="radio"] {
+  accent-color: var(--atp-blue);
+  cursor: pointer;
+}
+
+.quiz-result {
+  padding: 0.75rem 1rem;
+  border-radius: var(--atp-radius);
+  font-weight: 600;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.quiz-result.pass {
+  background: var(--atp-quiz-pass-bg);
+  color: var(--atp-quiz-pass-fg);
+}
+
+.quiz-result.retry {
+  background: var(--atp-quiz-retry-bg);
+  color: var(--atp-quiz-retry-fg);
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .atp-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .atp-profile-panel {
+    display: none;
+  }
+
+  .builder-config-panel {
+    display: none;
+  }
+}
+
+/* ── Dark Mode Overrides ────────────────────────────────────── */
+[data-theme="dark"] {
+  /* Inverted gray scale (50 = darkest bg, 900 = lightest text) */
+  --atp-gray-50:  #1a1f2e;
+  --atp-gray-100: #1e2433;
+  --atp-gray-200: #2a3144;
+  --atp-gray-300: #3a4460;
+  --atp-gray-500: #8b9ab4;
+  --atp-gray-600: #a8b5cc;
+  --atp-gray-700: #c5cfe0;
+  --atp-gray-900: #e8edf5;
+
+  /* Card / panel background */
+  --atp-card-bg: #1e2433;
+
+  /* App background */
+  --atp-bg: #151a27;
+
+  /* Blue tints — dark-safe navy versions */
+  --atp-blue-light: #1e2f5e;
+  --atp-blue-muted: #2a3f7a;
+
+  /* Badge colors — dark-safe equivalents */
+  --atp-badge-inprogress-bg: #422006;
+  --atp-badge-inprogress-fg: #fde68a;
+  --atp-badge-completed-bg:  #052e16;
+  --atp-badge-completed-fg:  #86efac;
+  --atp-quiz-pass-bg:        #052e16;
+  --atp-quiz-pass-fg:        #86efac;
+  --atp-quiz-retry-bg:       #431407;
+  --atp-quiz-retry-fg:       #fed7aa;
+
+  /* Softer shadows on dark backgrounds */
+  --atp-shadow:    0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --atp-shadow-md: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -1px rgba(0,0,0,0.2);
+}
+
+/* Structural overrides needed in dark mode (can't reach via variables alone) */
+[data-theme="dark"] .btn-default:hover {
+  background-color: var(--atp-gray-200) !important;
+}
+
+[data-theme="dark"] .modal-footer {
+  background: var(--atp-gray-100) !important;
+}
+
+[data-theme="dark"] .desk-sidebar .sidebar-menu li a {
+  color: var(--atp-gray-700) !important;
+}
+
+[data-theme="dark"] .desk-sidebar .sidebar-menu li.active a {
+  color: var(--atp-blue) !important;
+  border-left-color: var(--atp-blue) !important;
+}
+
+/* ── ATP Full-Page Mode (hide Frappe chrome on ATP pages) ───── */
+body.atp-full-page .navbar,
+body.atp-full-page #navbar {
+  display: none !important;
+}
+
+body.atp-full-page .desk-sidebar,
+body.atp-full-page #sidebar-wrapper {
+  display: none !important;
+}
+
+body.atp-full-page .main-section {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+body.atp-full-page .page-head {
+  display: none !important;
+}
+
+body.atp-full-page .layout-main {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+body.atp-full-page .layout-main-section-wrapper {
+  padding: 0 !important;
+}
+
+body.atp-full-page .layout-main-section {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ── Educator Dashboard ─────────────────────────────────────── */
+.atp-edu-section {
+  margin-bottom: 2.5rem;
+}
+
+.atp-edu-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.atp-edu-loading {
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--atp-gray-500);
+}
+
+.atp-edu-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--atp-gray-500);
+}
+
+.atp-edu-empty-icon {
+  font-size: 2.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.atp-edu-empty-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--atp-gray-700);
+  margin: 0 0 0.4rem;
+}
+
+.atp-edu-empty-msg {
+  font-size: 0.875rem;
+  margin: 0 0 1.25rem;
+}
+
+.atp-edu-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.atp-edu-action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1.25rem 1rem;
+  background: var(--atp-card-bg);
+  border: 1px solid var(--atp-gray-200);
+  border-radius: var(--atp-radius);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  text-align: center;
+}
+
+.atp-edu-action-card:hover:not(.atp-edu-action-disabled):not(:disabled) {
+  box-shadow: var(--atp-shadow-md);
+  border-color: var(--atp-blue-muted);
+}
+
+.atp-edu-action-disabled,
+.atp-edu-action-card:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.atp-edu-action-icon {
+  font-size: 1.6rem;
+}
+
+.atp-edu-action-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--atp-gray-700);
+}
+
+/* ── ATP Modal ──────────────────────────────────────────────── */
+.atp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.atp-modal {
+  background: var(--atp-card-bg);
+  border-radius: var(--atp-radius);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  width: 440px;
+  max-width: calc(100vw - 2rem);
+}
+
+.atp-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--atp-gray-200);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--atp-gray-900);
+}
+
+.atp-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--atp-gray-400);
+  line-height: 1;
+  padding: 0;
+}
+
+.atp-modal-close:hover {
+  color: var(--atp-gray-700);
+}
+
+.atp-modal-body {
+  padding: 1.25rem;
+}
+
+.atp-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  border-top: 1px solid var(--atp-gray-200);
+  background: var(--atp-gray-50);
+}

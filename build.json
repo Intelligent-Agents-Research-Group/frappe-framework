@@ -1,9 +1,22 @@
+{
     "source": [
-        "test_project/public/js/activity_builder.bundle.js",
-        "test_project/public/js/course_player.bundle.js"
+        "atp/public/js/activity_builder.bundle.js",
+        "atp/public/js/course_player.bundle.js",
+        "atp/public/js/student_dashboard.bundle.js",
+        "atp/public/js/enrollment_manager.bundle.js",
+        "atp/public/js/atp_settings.bundle.js",
+        "atp/public/js/educator_dashboard.bundle.js",
+        "atp/public/js/admin_dashboard.bundle.js",
+        "atp/public/js/educator_analytics.bundle.js"
     ],
     "output": {
-        "test_project/public/js/activity_builder.bundle.js": "test_project/public/dist/js/activity_builder.bundle.js",
-        "test_project/public/js/course_player.bundle.js": "test_project/public/dist/js/course_player.bundle.js"
+        "atp/public/js/activity_builder.bundle.js": "atp/public/dist/js/activity_builder.bundle.js",
+        "atp/public/js/course_player.bundle.js": "atp/public/dist/js/course_player.bundle.js",
+        "atp/public/js/student_dashboard.bundle.js": "atp/public/dist/js/student_dashboard.bundle.js",
+        "atp/public/js/enrollment_manager.bundle.js": "atp/public/dist/js/enrollment_manager.bundle.js",
+        "atp/public/js/atp_settings.bundle.js": "atp/public/dist/js/atp_settings.bundle.js",
+        "atp/public/js/educator_dashboard.bundle.js": "atp/public/dist/js/educator_dashboard.bundle.js",
+        "atp/public/js/admin_dashboard.bundle.js": "atp/public/dist/js/admin_dashboard.bundle.js",
+        "atp/public/js/educator_analytics.bundle.js": "atp/public/dist/js/educator_analytics.bundle.js"
     }
 }

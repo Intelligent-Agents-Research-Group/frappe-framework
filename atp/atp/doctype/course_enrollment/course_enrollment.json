@@ -1,0 +1,100 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2024-05-22 13:46:27.189539",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "student",
+        "course",
+        "status",
+        "enrolled_by",
+        "progress",
+        "naming_series"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Naming Series",
+            "options": "ENR-.#####",
+            "default": "ENR-.#####",
+            "hidden": 1
+        },
+        {
+            "fieldname": "student",
+            "fieldtype": "Link",
+            "label": "Student",
+            "options": "User",
+            "reqd": 1
+        },
+        {
+            "fieldname": "course",
+            "fieldtype": "Link",
+            "label": "Course",
+            "options": "Course",
+            "reqd": 1
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "In Progress\nCompleted",
+            "default": "In Progress"
+        },
+        {
+            "fieldname": "enrolled_by",
+            "fieldtype": "Link",
+            "label": "Enrolled By",
+            "options": "User",
+            "read_only": 1
+        },
+        {
+            "fieldname": "progress",
+            "fieldtype": "JSON",
+            "label": "Progress Data",
+            "read_only": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2026-04-10 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Course Enrollment",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "ATP Educator",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "read": 1,
+            "write": 1,
+            "role": "ATP Student"
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

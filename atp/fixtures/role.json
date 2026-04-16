@@ -1,0 +1,14 @@
+[
+    {
+        "doctype": "Role",
+        "name": "ATP Educator",
+        "role_name": "ATP Educator",
+        "desk_access": 1
+    },
+    {
+        "doctype": "Role",
+        "name": "ATP Student",
+        "role_name": "ATP Student",
+        "desk_access": 1
+    }
+]

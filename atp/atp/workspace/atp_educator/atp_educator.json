@@ -1,0 +1,91 @@
+{
+ "charts": [],
+ "content": "",
+ "creation": "2026-04-10 00:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "education",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "ATP",
+ "links": [
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Educator Dashboard",
+   "link_count": 0,
+   "link_to": "educator_dashboard",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Enrollment Manager",
+   "link_count": 0,
+   "link_to": "enrollment_manager",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "ATP Settings",
+   "link_count": 0,
+   "link_to": "atp_settings",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 1,
+   "is_query_report": 0,
+   "label": "Student Dashboard",
+   "link_count": 0,
+   "link_to": "student_dashboard",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 1,
+   "is_query_report": 0,
+   "label": "Course Player",
+   "link_count": 0,
+   "link_to": "course_player",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-04-10 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Atp",
+ "name": "ATP Educator",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "ATP Educator"
+  },
+  {
+   "role": "System Manager"
+  }
+ ],
+ "sequence_id": 1.0,
+ "shortcuts": [],
+ "title": "ATP"
+}

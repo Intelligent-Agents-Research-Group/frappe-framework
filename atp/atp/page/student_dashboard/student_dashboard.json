@@ -1,0 +1,19 @@
+{
+    "content": "Student Dashboard",
+    "creation": "2026-04-10 00:00:00.000000",
+    "docstatus": 0,
+    "doctype": "Page",
+    "idx": 0,
+    "modified": "2026-04-10 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "student_dashboard",
+    "owner": "Administrator",
+    "page_name": "student_dashboard",
+    "roles": [
+        {"role": "System Manager"},
+        {"role": "ATP Student"}
+    ],
+    "standard": "Yes",
+    "title": "Student Dashboard"
+}
