@@ -27,14 +27,13 @@
       if (el) el.textContent = titleMap[sel];
     });
 
-    /* 3. Replace sign-up messages with the ATP contact line */
-    document.querySelectorAll('.for-login .sign-up-message, .for-email-login .sign-up-message').forEach(function (el) {
-      /* CSS already hides el — insert a sibling with the custom copy */
-      if (el.parentNode.querySelector('.atp-contact-message')) return;
+    /* 3. Add ATP contact line after the login button */
+    document.querySelectorAll('.for-login .page-card-actions, .for-email-login .page-card-actions').forEach(function (actions) {
+      if (actions.parentNode.querySelector('.atp-contact-message')) return;
       var msg = document.createElement('div');
       msg.className = 'atp-contact-message';
       msg.textContent = 'Need access? Contact your instructor.';
-      el.parentNode.insertBefore(msg, el);
+      actions.parentNode.insertBefore(msg, actions.nextSibling);
     });
   }
 

@@ -109,6 +109,10 @@ function logout() {
 	frappe.call({ method: 'logout' }).then(() => { window.location.href = '/login'; });
 }
 
+const goToEnrollmentManager = () => frappe.set_route('enrollment_manager');
+const goToSettings = () => frappe.set_route('atp_settings');
+const goToDesk = () => { window.location.href = '/desk'; };
+
 const userSearch = ref('');
 
 const filteredUsers = computed(() => {
@@ -252,15 +256,15 @@ const filteredUsers = computed(() => {
       <div class="atp-edu-section">
         <div class="atp-section-label" style="margin-bottom:0.75rem">Quick Links</div>
         <div class="atp-edu-actions">
-          <button class="atp-edu-action-card" @click="frappe.set_route('enrollment_manager')">
+          <button class="atp-edu-action-card" @click="goToEnrollmentManager">
             <span class="atp-edu-action-icon">👥</span>
             <span class="atp-edu-action-label">Enrollment Manager</span>
           </button>
-          <button class="atp-edu-action-card" @click="frappe.set_route('atp_settings')">
+          <button class="atp-edu-action-card" @click="goToSettings">
             <span class="atp-edu-action-icon">⚙️</span>
             <span class="atp-edu-action-label">ATP Settings</span>
           </button>
-          <button class="atp-edu-action-card" @click="window.location.href='/desk'">
+          <button class="atp-edu-action-card" @click="goToDesk">
             <span class="atp-edu-action-icon">🔧</span>
             <span class="atp-edu-action-label">Frappe Desk</span>
           </button>
