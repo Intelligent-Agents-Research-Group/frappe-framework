@@ -30,23 +30,40 @@ const init = async () => {
 				try {
 					const { message: cd } = await frappe.call({
 						method: 'frappe.client.get_value',
-						args: { doctype: 'Course', filters: e.course, fieldname: ['title', 'thumbnail', 'description', 'flow_data'] },
+						args: { doctype: 'Course', filters: e.course, fieldname: ['title', 'thumbnail', 'description', 'flow_data', 'scene_config'] },
 					});
 					const progressPct = _calcProgress(e, cd.flow_data);
+					let prerequisites = [];
+					if (cd.scene_config) {
+						try { prerequisites = JSON.parse(cd.scene_config).prerequisites || []; } catch {}
+					}
 					return {
 						...e,
 						courseTitle: cd.title || e.course,
 						courseThumbnail: cd.thumbnail || '',
 						courseDescription: cd.description || '',
 						_progressPct: progressPct,
+						_prerequisites: prerequisites,
 					};
 				} catch {
-					return { ...e, courseTitle: e.course, courseThumbnail: '', courseDescription: '', _progressPct: 0 };
+					return { ...e, courseTitle: e.course, courseThumbnail: '', courseDescription: '', _progressPct: 0, _prerequisites: [] };
 				}
 			}),
 		);
 
-		enrollments.value = enriched;
+		// Compute locked state: a course is locked if any prerequisite isn't completed
+		const completedCourses = new Set(enriched.filter((e) => e.status === 'Completed').map((e) => e.course));
+		const courseNameToTitle = Object.fromEntries(enriched.map((e) => [e.course, e.courseTitle]));
+		const withLocked = enriched.map((e) => {
+			const unmet = (e._prerequisites || []).filter((p) => !completedCourses.has(p));
+			return {
+				...e,
+				_locked: unmet.length > 0,
+				_unmetPrereqs: unmet.map((p) => courseNameToTitle[p] || p),
+			};
+		});
+
+		enrollments.value = withLocked;
 	} catch (err) {
 		console.error('StudentDashboard: load error', err);
 		loadError.value = true;
@@ -97,18 +114,21 @@ const getInitials = (name) => {
 };
 
 const getCTA = (e) => {
+	if (e._locked) return '🔒 Locked';
 	if (e.status === 'Completed') return 'Review';
 	if (e.progress) return 'Continue';
 	return 'Start';
 };
 
 const getStatusLabel = (e) => {
+	if (e._locked) return 'Locked';
 	if (e.status === 'Completed') return 'Completed';
 	if (e.progress) return 'In Progress';
 	return 'Not Started';
 };
 
 const getStatusClass = (e) => {
+	if (e._locked) return 'atp-badge-locked';
 	if (e.status === 'Completed') return 'atp-badge-completed';
 	if (e.progress) return 'atp-badge-inprogress';
 	return 'atp-badge-notstarted';
@@ -127,6 +147,11 @@ const getThumbEmoji = (title) => {
 // ── Actions ───────────────────────────────────────────────────────────────
 
 const openCourse = (enrollment) => {
+	if (enrollment._locked) {
+		const prereqList = enrollment._unmetPrereqs.join(', ');
+		frappe.show_alert({ message: `Complete first: ${prereqList}`, indicator: 'orange' }, 4);
+		return;
+	}
 	frappe.set_route('course_player', enrollment.name);
 };
 
@@ -195,6 +220,7 @@ defineExpose({ init });
 							v-for="e in visibleCourses"
 							:key="e.name"
 							class="atp-course-card"
+							:class="{ 'atp-course-card-locked': e._locked }"
 							@click="openCourse(e)"
 						>
 							<!-- Thumbnail -->
@@ -205,11 +231,15 @@ defineExpose({ init });
 									:alt="e.courseTitle"
 								/>
 								<span v-else class="thumb-emoji">{{ getThumbEmoji(e.courseTitle) }}</span>
+								<div v-if="e._locked" class="card-lock-overlay">🔒</div>
 							</div>
 
 							<!-- Card body -->
 							<div class="card-body">
 								<p class="card-title">{{ e.courseTitle }}</p>
+								<div v-if="e._locked && e._unmetPrereqs && e._unmetPrereqs.length" class="card-prereq-hint">
+									Complete first: {{ e._unmetPrereqs.join(', ') }}
+								</div>
 								<div class="card-meta">
 									<span class="atp-badge" :class="getStatusClass(e)">
 										{{ getStatusLabel(e) }}
@@ -220,8 +250,8 @@ defineExpose({ init });
 									<div class="fill" :style="{ width: e._progressPct + '%' }"></div>
 								</div>
 								<div class="card-cta">
-									<button class="atp-btn atp-btn-primary card-action-btn">
-										{{ getCTA(e) }} →
+									<button class="atp-btn atp-btn-primary card-action-btn" :disabled="e._locked">
+										{{ e._locked ? '🔒 Locked' : (getCTA(e) + ' →') }}
 									</button>
 								</div>
 							</div>
@@ -237,10 +267,6 @@ defineExpose({ init });
 					<div class="atp-profile-name">{{ userName }}</div>
 					<div class="atp-profile-links">
 						<a @click.prevent="activeFilter = 'completed'">Completed Activities</a>
-						<span class="atp-profile-link-soon">
-							Join an activity
-							<span class="atp-badge atp-badge-notstarted" style="font-size:0.58rem;vertical-align:middle;margin-left:0.2rem">Soon</span>
-						</span>
 						<a @click.prevent="goSettings">Settings</a>
 					</div>
 				</div>
@@ -428,6 +454,45 @@ defineExpose({ init });
 .atp-badge-notstarted { background: var(--atp-gray-100, #f3f4f6); color: var(--atp-gray-600, #4b5563); }
 .atp-badge-inprogress { background: var(--atp-badge-inprogress-bg, #fef9c3); color: var(--atp-badge-inprogress-fg, #854d0e); }
 .atp-badge-completed  { background: var(--atp-badge-completed-bg, #dcfce7); color: var(--atp-badge-completed-fg, #166534); }
+.atp-badge-locked     { background: #f3f4f6; color: #9ca3af; }
+
+/* Locked card state */
+.atp-course-card-locked {
+	opacity: 0.75;
+}
+
+.atp-course-card-locked:hover {
+	cursor: default;
+	box-shadow: none;
+	border-color: var(--atp-gray-200, #e5e7eb);
+}
+
+.card-thumb {
+	position: relative;
+}
+
+.card-lock-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(255,255,255,0.55);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.8rem;
+}
+
+.card-prereq-hint {
+	font-size: 0.68rem;
+	color: var(--atp-gray-500, #6b7280);
+	margin-bottom: 0.35rem;
+	line-height: 1.4;
+}
+
+.card-action-btn:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+	background: #9ca3af;
+}
 
 /* Progress bar */
 .atp-progress-bar {

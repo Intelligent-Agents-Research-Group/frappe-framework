@@ -10,16 +10,21 @@ const emit = defineEmits(['update:modelValue', 'save', 'delete']);
 
 const localConfig = ref({});
 const uploading = ref(false);
+const showAdaptive = ref(false);
 const componentType = computed(() => props.node?.data?.componentType || '');
+
+const SENSOR_NODES = ['Microphone', 'Camera', 'External Sensor', 'Learner Model'];
 
 watch(
 	() => props.node,
 	(newNode) => {
 		if (newNode) {
 			localConfig.value = { ...newNode.data.config, label: newNode.label };
-			// Ensure quiz/survey questions arrays exist
 			if (!localConfig.value.questions) localConfig.value.questions = [];
+			if (!localConfig.value.sensors) localConfig.value.sensors = {};
+			if (!localConfig.value.learnerModel) localConfig.value.learnerModel = { type: 'inherit' };
 		}
+		showAdaptive.value = false;
 	},
 	{ immediate: true },
 );
@@ -392,6 +397,45 @@ const removeOption = (qIdx, oIdx) => {
 					</div>
 					<p class="sensor-hint">The learner model engine requires the ATP Pedagogical Engine backend. This node captures the configuration that will be passed to it.</p>
 				</template>
+
+				<!-- Sensors & Learner Model override — for all content nodes -->
+				<template v-if="!SENSOR_NODES.includes(componentType)">
+					<div class="adaptive-divider"></div>
+					<div class="adaptive-toggle-row" @click="showAdaptive = !showAdaptive">
+						<span class="adaptive-toggle-label">🔬 Sensors &amp; Learner Model</span>
+						<span class="adaptive-toggle-caret">{{ showAdaptive ? '▲' : '▼' }}</span>
+					</div>
+					<div v-if="showAdaptive" class="adaptive-body">
+						<div class="field-group">
+							<label>Active sensors for this activity</label>
+							<label class="check-row"><input type="checkbox" v-model="localConfig.sensors.timeOnTask" /><span>Time on Task</span></label>
+							<label class="check-row"><input type="checkbox" v-model="localConfig.sensors.quizPerformance" /><span>Quiz Performance</span></label>
+							<label class="check-row"><input type="checkbox" v-model="localConfig.sensors.microphone" /><span>Microphone Recording</span></label>
+							<label class="check-row"><input type="checkbox" v-model="localConfig.sensors.camera" /><span>Camera Recording</span></label>
+							<label class="check-row"><input type="checkbox" v-model="localConfig.sensors.externalSensor" /><span>External Sensor</span></label>
+						</div>
+						<div class="field-group">
+							<label>Learner model for this activity</label>
+							<select v-model="localConfig.learnerModel.type" class="mc-input mc-select">
+								<option value="inherit">Inherit from course default</option>
+								<option value="none">None</option>
+								<option value="bkt">Bayesian Knowledge Tracing (BKT)</option>
+								<option value="irt">Item Response Theory (IRT)</option>
+								<option value="pfa">Performance Factor Analysis (PFA)</option>
+							</select>
+						</div>
+						<template v-if="localConfig.learnerModel.type && localConfig.learnerModel.type !== 'inherit' && localConfig.learnerModel.type !== 'none'">
+							<div class="field-group">
+								<label>Skill / competency tracked</label>
+								<input v-model="localConfig.learnerModel.skillName" type="text" class="mc-input" placeholder="e.g. Negotiation Fundamentals" />
+							</div>
+							<div class="field-group">
+								<label>Mastery threshold (%)</label>
+								<input v-model.number="localConfig.learnerModel.masteryThreshold" type="number" class="mc-input" placeholder="80" min="50" max="100" />
+							</div>
+						</template>
+					</div>
+				</template>
 			</div>
 
 			<!-- Footer -->
@@ -707,5 +751,54 @@ const removeOption = (qIdx, oIdx) => {
 	border: 1px solid #e5e7eb;
 	border-radius: 5px;
 	margin: 0;
+}
+
+/* Adaptive learning section */
+.adaptive-divider {
+	height: 1px;
+	background: #e5e7eb;
+	margin: 0.25rem 0;
+}
+
+.adaptive-toggle-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+	padding: 0.35rem 0;
+	user-select: none;
+}
+
+.adaptive-toggle-label {
+	font-size: 0.78rem;
+	font-weight: 700;
+	color: #374151;
+}
+
+.adaptive-toggle-caret {
+	font-size: 0.65rem;
+	color: #9ca3af;
+}
+
+.adaptive-body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	padding-top: 0.25rem;
+}
+
+.check-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.82rem;
+	color: #374151;
+	cursor: pointer;
+	padding: 0.15rem 0;
+}
+
+.check-row input[type="checkbox"] {
+	accent-color: #3b82f6;
+	cursor: pointer;
 }
 </style>

@@ -155,16 +155,34 @@ def get_students():
 
 
 @frappe.whitelist()
-def update_progress(enrollment_name, current_node_id):
+def update_progress(enrollment_name, current_node_id, sensor_data=None):
 	"""Let a student persist their progress position in a course."""
 	enrollment = frappe.get_doc("Course Enrollment", enrollment_name)
 	if enrollment.student != frappe.session.user:
 		frappe.throw(_("Not permitted"), frappe.PermissionError)
 	import json
-	enrollment.progress = json.dumps({"currentNodeId": current_node_id})
+	progress = {"currentNodeId": current_node_id}
+	if sensor_data:
+		try:
+			sd = json.loads(sensor_data) if isinstance(sensor_data, str) else sensor_data
+			progress["sensorData"] = sd
+		except Exception:
+			pass
+	enrollment.progress = json.dumps(progress)
 	enrollment.save(ignore_permissions=True)
 	frappe.db.commit()
 	return "ok"
+
+
+@frappe.whitelist()
+def get_courses_list():
+	"""Return all courses for use in prerequisite pickers."""
+	_require_educator()
+	return frappe.db.get_list(
+		"Course",
+		fields=["name", "title", "is_published"],
+		order_by="title asc",
+	)
 
 
 @frappe.whitelist()

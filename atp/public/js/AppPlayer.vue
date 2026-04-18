@@ -9,7 +9,9 @@ const loading = ref(true);
 const completed = ref(false);
 const finalScore = ref(null);
 const reviewMode = ref(false);
-const initError = ref(null); // null | 'no-enrollment' | 'not-found'
+const initError = ref(null); // null | 'no-enrollment' | 'not-found' | 'prerequisites'
+const unmetPrereqs = ref([]); // course titles of unmet prerequisites
+const nodeEntryTime = ref(null); // for time-on-task sensor
 
 // Quiz state per node
 const quizAnswers = reactive({});
@@ -93,6 +95,41 @@ const init = async () => {
 		const courseDoc = await frappe.db.get_doc('Course', enrollment.course);
 		course.value = courseDoc;
 
+		// Check prerequisites
+		if (courseDoc.scene_config) {
+			try {
+				const sc = JSON.parse(courseDoc.scene_config);
+				const prereqs = sc.prerequisites || [];
+				if (prereqs.length > 0) {
+					const completed_enrollments = await frappe.db.get_list('Course Enrollment', {
+						filters: { student: frappe.session.user, course: ['in', prereqs], status: 'Completed' },
+						fields: ['course'],
+						limit: prereqs.length + 1,
+					});
+					const completedSet = new Set(completed_enrollments.map((e) => e.course));
+					const unmet = prereqs.filter((p) => !completedSet.has(p));
+					if (unmet.length > 0) {
+						// Fetch titles for unmet prereqs
+						const titles = await Promise.all(
+							unmet.map(async (p) => {
+								try {
+									const { message } = await frappe.call({
+										method: 'frappe.client.get_value',
+										args: { doctype: 'Course', filters: p, fieldname: 'title' },
+									});
+									return message?.title || p;
+								} catch { return p; }
+							}),
+						);
+						unmetPrereqs.value = titles;
+						initError.value = 'prerequisites';
+						loading.value = false;
+						return;
+					}
+				}
+			} catch {}
+		}
+
 		if (courseDoc.flow_data) {
 			try { flow.value = JSON.parse(courseDoc.flow_data); } catch { /* corrupted — treat as empty */ }
 			if (flow.value) {
@@ -174,13 +211,28 @@ const prev = async () => {
 };
 
 const updateProgress = async () => {
+	const timeSpentSeconds = nodeEntryTime.value ? Math.round((Date.now() - nodeEntryTime.value) / 1000) : 0;
+	nodeEntryTime.value = Date.now();
+
+	const nodeConfig = currentNode.value?.data?.config || {};
+	const sensorData = JSON.stringify({
+		timeSpentSeconds,
+		nodeComponentType: currentNode.value?.data?.componentType || null,
+		nodeSensors: nodeConfig.sensors || null,
+		nodeLearnerModel: nodeConfig.learnerModel || null,
+	});
+
 	try {
 		await frappe.call({
 			method: 'atp.atp.api.update_progress',
-			args: { enrollment_name: enrollmentName.value, current_node_id: currentNodeId.value },
+			args: {
+				enrollment_name: enrollmentName.value,
+				current_node_id: currentNodeId.value,
+				sensor_data: sensorData,
+			},
 		});
 	} catch {
-		// Fallback to direct set_value
+		// Fallback to direct set_value (no sensor data)
 		try {
 			await frappe.call({
 				method: 'frappe.client.set_value',
@@ -267,8 +319,10 @@ const goToDashboard = () => frappe.set_route('student_dashboard');
 onMounted(() => init());
 
 // Initialize answer stores synchronously before render to avoid v-model crash
+// Also reset time-on-task timer when node changes
 watch(currentNode, (node) => {
 	if (!node) return;
+	nodeEntryTime.value = Date.now();
 	if (node.data?.componentType === 'Quiz') initQuizAnswers(node.id);
 	else if (node.data?.componentType === 'Survey') initSurveyAnswers(node.id);
 }, { immediate: true, flush: 'sync' });
@@ -297,6 +351,19 @@ watch(currentNode, (node) => {
 			<div class="error-icon">⚠️</div>
 			<p>Course not found or access denied.</p>
 			<p class="error-sub">This course may have been removed or your access has changed.</p>
+			<button class="btn-primary-lg" @click="goToDashboard">
+				Back to Dashboard
+			</button>
+		</div>
+
+		<!-- Error: prerequisites not met -->
+		<div v-else-if="initError === 'prerequisites'" class="player-error">
+			<div class="error-icon">🔒</div>
+			<p>This course is locked.</p>
+			<p class="error-sub">You need to complete the following course{{ unmetPrereqs.length !== 1 ? 's' : '' }} first:</p>
+			<ul class="prereq-list">
+				<li v-for="t in unmetPrereqs" :key="t">{{ t }}</li>
+			</ul>
 			<button class="btn-primary-lg" @click="goToDashboard">
 				Back to Dashboard
 			</button>
@@ -633,7 +700,23 @@ watch(currentNode, (node) => {
 .error-sub {
 	font-size: 0.82rem;
 	color: #9ca3af;
-	margin: 0.25rem 0 1.5rem;
+	margin: 0.25rem 0 0.75rem;
+}
+
+.prereq-list {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 1.5rem;
+}
+
+.prereq-list li {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #374151;
+	padding: 0.3rem 0.75rem;
+	background: #f3f4f6;
+	border-radius: 5px;
+	margin-bottom: 0.3rem;
 }
 
 .error-debug {
