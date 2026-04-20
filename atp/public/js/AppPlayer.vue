@@ -95,6 +95,34 @@ const init = async () => {
 		const courseDoc = await frappe.db.get_doc('Course', enrollment.course);
 		course.value = courseDoc;
 
+		// Check sequential order lock
+		if (enrollment.sequence_order > 0) {
+			const allEnrollments = await frappe.db.get_list('Course Enrollment', {
+				filters: { student: frappe.session.user, sequence_order: ['>', 0] },
+				fields: ['course', 'status', 'sequence_order'],
+				limit: 100,
+			});
+			allEnrollments.sort((a, b) => a.sequence_order - b.sequence_order);
+			for (const e of allEnrollments) {
+				if (e.course === enrollment.course) break;
+				if (e.sequence_order < enrollment.sequence_order && e.status !== 'Completed') {
+					// Find the course title for the blocking course
+					try {
+						const { message: blocking } = await frappe.call({
+							method: 'frappe.client.get_value',
+							args: { doctype: 'Course', filters: e.course, fieldname: 'title' },
+						});
+						unmetPrereqs.value = [blocking?.title || e.course];
+					} catch {
+						unmetPrereqs.value = [e.course];
+					}
+					initError.value = 'prerequisites';
+					loading.value = false;
+					return;
+				}
+			}
+		}
+
 		// Check prerequisites
 		if (courseDoc.scene_config) {
 			try {

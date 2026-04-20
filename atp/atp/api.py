@@ -186,6 +186,21 @@ def get_courses_list():
 
 
 @frappe.whitelist()
+def set_enrollment_sequence(enrollment_name, sequence_order):
+	"""Set the sequence order for a student's course enrollment. Educator-only."""
+	_require_educator()
+	enrollment = frappe.get_doc("Course Enrollment", enrollment_name)
+	try:
+		order = int(sequence_order)
+	except (ValueError, TypeError):
+		order = 0
+	enrollment.sequence_order = max(0, order)
+	enrollment.save(ignore_permissions=True)
+	frappe.db.commit()
+	return "ok"
+
+
+@frappe.whitelist()
 def complete_course(enrollment_name):
 	"""Mark a course enrollment as Completed."""
 	enrollment = frappe.get_doc("Course Enrollment", enrollment_name)
@@ -401,7 +416,7 @@ def get_student_enrollments(student_email):
 	enrollments = frappe.db.get_list(
 		"Course Enrollment",
 		filters={"student": student_email},
-		fields=["name", "course", "status", "progress", "modified"],
+		fields=["name", "course", "status", "progress", "modified", "sequence_order"],
 		order_by="modified desc",
 	)
 
@@ -432,6 +447,7 @@ def get_student_enrollments(student_email):
 			"course_title": course_title,
 			"status": e["status"],
 			"progress_pct": progress_pct,
+			"sequence_order": e.get("sequence_order") or 0,
 			"modified": str(e["modified"]),
 		})
 

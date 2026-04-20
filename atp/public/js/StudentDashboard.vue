@@ -20,7 +20,7 @@ const init = async () => {
 
 		const result = await frappe.db.get_list('Course Enrollment', {
 			filters: { student: frappe.session.user },
-			fields: ['name', 'course', 'status', 'progress', 'modified'],
+			fields: ['name', 'course', 'status', 'progress', 'modified', 'sequence_order'],
 			order_by: 'modified desc',
 			limit: 50,
 		});
@@ -44,24 +44,44 @@ const init = async () => {
 						courseDescription: cd.description || '',
 						_progressPct: progressPct,
 						_prerequisites: prerequisites,
+						_seqOrder: e.sequence_order || 0,
 					};
 				} catch {
-					return { ...e, courseTitle: e.course, courseThumbnail: '', courseDescription: '', _progressPct: 0, _prerequisites: [] };
+					return { ...e, courseTitle: e.course, courseThumbnail: '', courseDescription: '', _progressPct: 0, _prerequisites: [], _seqOrder: 0 };
 				}
 			}),
 		);
 
-		// Compute locked state: a course is locked if any prerequisite isn't completed
+		// Compute prerequisite locks
 		const completedCourses = new Set(enriched.filter((e) => e.status === 'Completed').map((e) => e.course));
 		const courseNameToTitle = Object.fromEntries(enriched.map((e) => [e.course, e.courseTitle]));
-		const withLocked = enriched.map((e) => {
+		const withPrereqLock = enriched.map((e) => {
 			const unmet = (e._prerequisites || []).filter((p) => !completedCourses.has(p));
 			return {
 				...e,
-				_locked: unmet.length > 0,
+				_prereqLocked: unmet.length > 0,
 				_unmetPrereqs: unmet.map((p) => courseNameToTitle[p] || p),
 			};
 		});
+
+		// Compute sequence locks: within sequenced courses, each step blocks the next until complete
+		const seqMap = new Map(); // sequence_order → enrollment
+		withPrereqLock.forEach((e) => {
+			if (e._seqOrder > 0) seqMap.set(e._seqOrder, e);
+		});
+		const seqKeys = Array.from(seqMap.keys()).sort((a, b) => a - b);
+		let seqBlockedAfter = false;
+		const seqLocked = new Set();
+		for (const k of seqKeys) {
+			const e = seqMap.get(k);
+			if (seqBlockedAfter) seqLocked.add(e.name);
+			if (e.status !== 'Completed') seqBlockedAfter = true;
+		}
+
+		const withLocked = withPrereqLock.map((e) => ({
+			...e,
+			_locked: e._prereqLocked || seqLocked.has(e.name),
+		}));
 
 		enrollments.value = withLocked;
 	} catch (err) {
@@ -97,8 +117,14 @@ const completedCourses = computed(() =>
 	enrollments.value.filter((e) => e.status === 'Completed'),
 );
 
+const sortEnrollments = (list) => {
+	const sequenced = list.filter((e) => e._seqOrder > 0).sort((a, b) => a._seqOrder - b._seqOrder);
+	const unsequenced = list.filter((e) => !e._seqOrder);
+	return [...sequenced, ...unsequenced];
+};
+
 const visibleCourses = computed(() =>
-	activeFilter.value === 'completed' ? completedCourses.value : ongoingCourses.value,
+	sortEnrollments(activeFilter.value === 'completed' ? completedCourses.value : ongoingCourses.value),
 );
 
 const completedCount = computed(() => completedCourses.value.length);
@@ -236,7 +262,10 @@ defineExpose({ init });
 
 							<!-- Card body -->
 							<div class="card-body">
-								<p class="card-title">{{ e.courseTitle }}</p>
+								<div class="card-title-row">
+									<p class="card-title">{{ e.courseTitle }}</p>
+									<span v-if="e._seqOrder > 0" class="card-step-badge">Step {{ e._seqOrder }}</span>
+								</div>
 								<div v-if="e._locked && e._unmetPrereqs && e._unmetPrereqs.length" class="card-prereq-hint">
 									Complete first: {{ e._unmetPrereqs.join(', ') }}
 								</div>
@@ -421,12 +450,35 @@ defineExpose({ init });
 	padding: 0.75rem;
 }
 
+.card-title-row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.35rem;
+	margin-bottom: 0.5rem;
+}
+
 .card-title {
 	font-size: 0.82rem;
 	font-weight: 600;
 	color: var(--atp-gray-900, #111827);
-	margin: 0 0 0.5rem 0;
+	margin: 0;
 	line-height: 1.35;
+	flex: 1;
+	min-width: 0;
+}
+
+.card-step-badge {
+	font-size: 0.62rem;
+	font-weight: 700;
+	background: #eff6ff;
+	color: #3b82f6;
+	border: 1px solid #dbeafe;
+	border-radius: 3px;
+	padding: 0.1rem 0.35rem;
+	white-space: nowrap;
+	flex-shrink: 0;
+	margin-top: 0.05rem;
 }
 
 .card-meta {

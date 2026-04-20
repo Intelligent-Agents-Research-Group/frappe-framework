@@ -10,6 +10,7 @@
         "status",
         "enrolled_by",
         "progress",
+        "sequence_order",
         "naming_series"
     ],
     "fields": [
@@ -54,6 +55,12 @@
             "fieldtype": "JSON",
             "label": "Progress Data",
             "read_only": 1
+        },
+        {
+            "fieldname": "sequence_order",
+            "fieldtype": "Int",
+            "label": "Sequence Order",
+            "default": 0
         }
     ],
     "index_web_pages_for_search": 1,

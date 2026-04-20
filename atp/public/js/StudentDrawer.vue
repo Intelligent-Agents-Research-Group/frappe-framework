@@ -138,6 +138,22 @@ const getStatusLabel = (status, progressPct) => {
 	if (progressPct > 0) return 'In Progress';
 	return 'Not Started';
 };
+
+const savingSeq = ref({});
+
+const saveSequence = async (enrollment) => {
+	savingSeq.value[enrollment.name] = true;
+	try {
+		await frappe.call({
+			method: 'atp.atp.api.set_enrollment_sequence',
+			args: { enrollment_name: enrollment.name, sequence_order: enrollment.sequence_order },
+		});
+	} catch (e) {
+		frappe.show_alert({ message: e?.message || 'Failed to save order.', indicator: 'red' }, 3);
+	} finally {
+		savingSeq.value[enrollment.name] = false;
+	}
+};
 </script>
 
 <template>
@@ -178,7 +194,21 @@ const getStatusLabel = (status, progressPct) => {
 					<div v-else-if="enrollments.length === 0" class="sd-empty">Not enrolled in any courses yet.</div>
 					<div v-else class="sd-course-list">
 						<div v-for="e in enrollments" :key="e.name" class="sd-course-item">
-							<div class="sd-course-title">{{ e.course_title }}</div>
+							<div class="sd-course-header">
+								<div class="sd-course-title">{{ e.course_title }}</div>
+								<div class="sd-seq-control" title="Step order (0 = unordered)">
+									<span class="sd-seq-label">#</span>
+									<input
+										v-model.number="e.sequence_order"
+										type="number"
+										min="0"
+										max="99"
+										class="sd-seq-input"
+										@change="saveSequence(e)"
+										:disabled="savingSeq[e.name]"
+									/>
+								</div>
+							</div>
 							<div class="sd-course-meta">
 								<span :class="['sd-badge', getStatusBadgeClass(e.status, e.progress_pct)]">
 									{{ getStatusLabel(e.status, e.progress_pct) }}
@@ -401,11 +431,54 @@ const getStatusLabel = (status, progressPct) => {
 	gap: 0.75rem;
 }
 
+.sd-course-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.5rem;
+	margin-bottom: 0.35rem;
+}
+
 .sd-course-title {
 	font-size: 0.82rem;
 	font-weight: 600;
 	color: #111827;
-	margin-bottom: 0.35rem;
+	flex: 1;
+	min-width: 0;
+}
+
+.sd-seq-control {
+	display: flex;
+	align-items: center;
+	gap: 0.2rem;
+	flex-shrink: 0;
+}
+
+.sd-seq-label {
+	font-size: 0.68rem;
+	font-weight: 700;
+	color: #9ca3af;
+}
+
+.sd-seq-input {
+	width: 36px;
+	padding: 0.15rem 0.25rem;
+	border: 1px solid #e5e7eb;
+	border-radius: 4px;
+	font-size: 0.75rem;
+	text-align: center;
+	color: #374151;
+	background: #f9fafb;
+}
+
+.sd-seq-input:focus {
+	outline: none;
+	border-color: #3b82f6;
+	background: #ffffff;
+}
+
+.sd-seq-input:disabled {
+	opacity: 0.5;
 }
 
 .sd-course-meta {
