@@ -1,0 +1,46 @@
+{
+    "actions": [],
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "istable": 1,
+    "field_order": [
+        "competency_node",
+        "label",
+        "weight"
+    ],
+    "fields": [
+        {
+            "fieldname": "competency_node",
+            "fieldtype": "Link",
+            "label": "Competency Node",
+            "options": "Competency Node",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fetch_from": "competency_node.label",
+            "fieldname": "label",
+            "fieldtype": "Data",
+            "label": "Label",
+            "read_only": 1,
+            "in_list_view": 1
+        },
+        {
+            "default": "1.0",
+            "fieldname": "weight",
+            "fieldtype": "Float",
+            "label": "Weight",
+            "in_list_view": 1
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Scenario Competency Node",
+    "owner": "Administrator",
+    "permissions": [],
+    "sort_field": "modified",
+    "sort_order": "DESC"
+}

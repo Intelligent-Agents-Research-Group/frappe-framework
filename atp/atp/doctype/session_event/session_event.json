@@ -1,0 +1,88 @@
+{
+    "actions": [],
+    "autoname": "hash",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "session",
+        "event_type",
+        "turn_id",
+        "sequence_number",
+        "written_by",
+        "timestamp",
+        "event_data"
+    ],
+    "fields": [
+        {
+            "fieldname": "session",
+            "fieldtype": "Link",
+            "label": "Session",
+            "options": "Training Session",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "event_type",
+            "fieldtype": "Select",
+            "label": "Event Type",
+            "options": "turn\nsensor\ncompetency_update\nintervention\nphase_change\ndebrief\nsession_start\nsession_end",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "turn_id",
+            "fieldtype": "Data",
+            "label": "Turn ID",
+            "in_list_view": 1
+        },
+        {
+            "default": "0",
+            "fieldname": "sequence_number",
+            "fieldtype": "Int",
+            "label": "Sequence Number"
+        },
+        {
+            "fieldname": "written_by",
+            "fieldtype": "Select",
+            "label": "Written By",
+            "options": "engine\nlogger\nbridge\nfrappe"
+        },
+        {
+            "fieldname": "timestamp",
+            "fieldtype": "Datetime",
+            "label": "Timestamp",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "event_data",
+            "fieldtype": "JSON",
+            "label": "Event Data",
+            "hidden": 1
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Session Event",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        },
+        {
+            "read": 1,
+            "report": 1,
+            "role": "ATP Educator"
+        }
+    ],
+    "sort_field": "sequence_number",
+    "sort_order": "ASC",
+    "track_changes": 0
+}

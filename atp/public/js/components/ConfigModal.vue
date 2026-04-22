@@ -13,6 +13,9 @@ const uploading = ref(false);
 const showAdaptive = ref(false);
 const componentType = computed(() => props.node?.data?.componentType || '');
 
+const availableScenarios = ref([]);
+const loadingScenarios = ref(false);
+
 const SENSOR_NODES = ['Microphone', 'Camera', 'External Sensor', 'Learner Model'];
 
 watch(
@@ -25,6 +28,13 @@ watch(
 			if (!localConfig.value.learnerModel) localConfig.value.learnerModel = { type: 'inherit' };
 		}
 		showAdaptive.value = false;
+		// Lazy-load scenarios when a Scenario node is opened
+		if (newNode?.data?.componentType === 'Scenario' && availableScenarios.value.length === 0 && !loadingScenarios.value) {
+			loadingScenarios.value = true;
+			frappe.call({ method: 'atp.atp.api_v2.get_scenario_list' })
+				.then((r) => { availableScenarios.value = r.message || []; loadingScenarios.value = false; })
+				.catch(() => { loadingScenarios.value = false; });
+		}
 	},
 	{ immediate: true },
 );
@@ -171,6 +181,19 @@ const removeOption = (qIdx, oIdx) => {
 								<input type="file" accept=".pptx,.pdf" @change="handleFileUpload($event, 'presentationUrl')" hidden />
 							</label>
 						</div>
+					</div>
+				</template>
+
+				<!-- Scenario -->
+				<template v-else-if="componentType === 'Scenario'">
+					<div class="field-group">
+						<label>Training Scenario</label>
+						<div v-if="loadingScenarios" class="mc-loading">Loading scenarios…</div>
+						<select v-else v-model="localConfig.scenarioId" class="mc-input mc-select">
+							<option value="">— Select a scenario —</option>
+							<option v-for="s in availableScenarios" :key="s.name" :value="s.name">{{ s.title }}</option>
+						</select>
+						<p class="field-hint">Students will complete this AI-driven conversational scenario as a step in the course. After the debrief, they continue to the next node.</p>
 					</div>
 				</template>
 
@@ -800,5 +823,18 @@ const removeOption = (qIdx, oIdx) => {
 .check-row input[type="checkbox"] {
 	accent-color: #3b82f6;
 	cursor: pointer;
+}
+
+.field-hint {
+	font-size: 0.75rem;
+	color: #6b7280;
+	margin: 0.25rem 0 0;
+	line-height: 1.5;
+}
+
+.mc-loading {
+	font-size: 0.82rem;
+	color: #9ca3af;
+	padding: 0.35rem 0;
 }
 </style>

@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, reactive, watch } from 'vue';
+import ScenarioPlayer from './components/ScenarioPlayer.vue';
 
 const enrollmentName = ref('');
 const course = ref(null);
@@ -18,6 +19,7 @@ const quizAnswers = reactive({});
 const quizSubmitted = reactive({});
 const taskDone = reactive({});
 const surveyAnswers = reactive({});
+const scenarioCompleted = reactive({});
 
 const props = defineProps(['enrollmentName']);
 
@@ -195,12 +197,9 @@ const canProceed = computed(() => {
 	const node = currentNode.value;
 	if (!node) return true;
 	const type = node.data?.componentType;
-	if (type === 'Quiz') {
-		return !!quizSubmitted[node.id];
-	}
-	if (type === 'Task') {
-		return !!taskDone[node.id];
-	}
+	if (type === 'Quiz') return !!quizSubmitted[node.id];
+	if (type === 'Task') return !!taskDone[node.id];
+	if (type === 'Scenario') return !!scenarioCompleted[node.id];
 	return true;
 });
 
@@ -638,6 +637,27 @@ watch(currentNode, (node) => {
 					</div>
 				</template>
 
+				<!-- Scenario -->
+				<template v-else-if="currentNode?.data?.componentType === 'Scenario'">
+					<div v-if="!currentNode.data.config?.scenarioId" class="coming-soon">
+						<div class="coming-soon-icon">🎭</div>
+						<p class="coming-soon-title">Scenario not configured</p>
+						<p class="coming-soon-sub">An educator needs to link a Training Scenario to this step.</p>
+					</div>
+					<ScenarioPlayer
+						v-else-if="!scenarioCompleted[currentNode.id]"
+						:key="currentNode.id"
+						:scenario-id="currentNode.data.config.scenarioId"
+						:enrollment-name="enrollmentName"
+						@complete="scenarioCompleted[currentNode.id] = true"
+					/>
+					<div v-else class="scenario-done">
+						<div class="scenario-done-icon">✅</div>
+						<p class="scenario-done-title">Scenario complete</p>
+						<p class="scenario-done-sub">Continue to the next step.</p>
+					</div>
+				</template>
+
 				<!-- Virtual Agent -->
 				<template v-else-if="currentNode?.data?.componentType === 'Virtual Agent'">
 					<div class="content-intro" v-if="currentNode.data.config.description">
@@ -773,6 +793,30 @@ watch(currentNode, (node) => {
 }
 
 .coming-soon-sub {
+	font-size: 0.82rem;
+	color: #9ca3af;
+	margin: 0;
+}
+
+/* Scenario done state */
+.scenario-done {
+	text-align: center;
+	padding: 2.5rem 1rem;
+}
+
+.scenario-done-icon {
+	font-size: 2.5rem;
+	margin-bottom: 0.75rem;
+}
+
+.scenario-done-title {
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: #374151;
+	margin: 0 0 0.3rem;
+}
+
+.scenario-done-sub {
 	font-size: 0.82rem;
 	color: #9ca3af;
 	margin: 0;

@@ -200,8 +200,8 @@ const openSettings = async () => {
 	if (!availableCourses.value.length && !settingsLoading.value) {
 		settingsLoading.value = true;
 		try {
-			const r = await frappe.call({ method: 'atp.atp.api.get_courses_list' });
-			availableCourses.value = (r.message || []).filter((c) => c.name !== courseName.value);
+			const res = await frappe.call({ method: 'atp.atp.api.get_courses_list' });
+			availableCourses.value = (res.message || []).filter((c) => c.name !== courseName.value);
 		} catch {
 			frappe.show_alert({ message: 'Could not load course list.', indicator: 'red' });
 		} finally {

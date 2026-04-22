@@ -1,0 +1,146 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "is_submittable": 1,
+    "field_order": [
+        "naming_series",
+        "learner",
+        "scenario",
+        "scenario_version",
+        "status",
+        "delivery_mode",
+        "col_break_1",
+        "started_at",
+        "ended_at",
+        "end_reason",
+        "turn_count",
+        "session_state",
+        "debrief_content"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Naming Series",
+            "options": "SESS-.####"
+        },
+        {
+            "fieldname": "learner",
+            "fieldtype": "Link",
+            "label": "Learner",
+            "options": "Learner Profile",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "scenario",
+            "fieldtype": "Link",
+            "label": "Scenario",
+            "options": "Training Scenario",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "default": "1.0.0",
+            "fieldname": "scenario_version",
+            "fieldtype": "Data",
+            "label": "Scenario Version"
+        },
+        {
+            "default": "Draft",
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Draft\nActive\nCompleted\nAbandoned\nError",
+            "in_list_view": 1
+        },
+        {
+            "default": "web_2d",
+            "fieldname": "delivery_mode",
+            "fieldtype": "Select",
+            "label": "Delivery Mode",
+            "options": "web_2d\nweb_3d\nmobile\nar\nvr"
+        },
+        {
+            "fieldname": "col_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "started_at",
+            "fieldtype": "Datetime",
+            "label": "Started At",
+            "read_only": 1
+        },
+        {
+            "fieldname": "ended_at",
+            "fieldtype": "Datetime",
+            "label": "Ended At",
+            "read_only": 1
+        },
+        {
+            "fieldname": "end_reason",
+            "fieldtype": "Select",
+            "label": "End Reason",
+            "options": "\ncompleted\nabandoned\ntimeout\nescalated\nerror"
+        },
+        {
+            "default": "0",
+            "fieldname": "turn_count",
+            "fieldtype": "Int",
+            "label": "Turn Count",
+            "read_only": 1
+        },
+        {
+            "fieldname": "session_state",
+            "fieldtype": "JSON",
+            "label": "Session State",
+            "hidden": 1
+        },
+        {
+            "fieldname": "debrief_content",
+            "fieldtype": "JSON",
+            "label": "Debrief Content",
+            "hidden": 1
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Training Session",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "submit": 1,
+            "cancel": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "report": 1,
+            "role": "ATP Educator",
+            "submit": 1,
+            "cancel": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "role": "ATP Student",
+            "submit": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

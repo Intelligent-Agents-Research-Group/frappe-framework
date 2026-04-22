@@ -1,0 +1,84 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "title",
+        "difficulty",
+        "optimal_solution_blocks",
+        "description",
+        "starter_workspace_xml",
+        "test_cases"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Naming Series",
+            "options": "BPZL-.####"
+        },
+        {
+            "fieldname": "title",
+            "fieldtype": "Data",
+            "label": "Title",
+            "reqd": 1
+        },
+        {
+            "default": "intermediate",
+            "fieldname": "difficulty",
+            "fieldtype": "Select",
+            "label": "Difficulty",
+            "options": "beginner\nintermediate\nadvanced"
+        },
+        {
+            "fieldname": "optimal_solution_blocks",
+            "fieldtype": "Int",
+            "label": "Optimal Solution Blocks",
+            "reqd": 1
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Small Text",
+            "label": "Description"
+        },
+        {
+            "fieldname": "starter_workspace_xml",
+            "fieldtype": "Long Text",
+            "label": "Starter Workspace XML"
+        },
+        {
+            "fieldname": "test_cases",
+            "fieldtype": "JSON",
+            "label": "Test Cases",
+            "description": "Array of {input, expected_output, description}"
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Blockly Puzzle",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "role": "ATP Educator",
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

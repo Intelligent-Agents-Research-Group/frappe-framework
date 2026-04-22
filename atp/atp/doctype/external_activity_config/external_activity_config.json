@@ -1,0 +1,79 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "activity_title",
+        "integration_mode",
+        "is_active",
+        "tool_url",
+        "mapping_schema",
+        "pull_schedule"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Naming Series",
+            "options": "EAC-.####"
+        },
+        {
+            "fieldname": "activity_title",
+            "fieldtype": "Data",
+            "label": "Activity Title",
+            "reqd": 1
+        },
+        {
+            "fieldname": "integration_mode",
+            "fieldtype": "Select",
+            "label": "Integration Mode",
+            "options": "xapi_push\nrest_pull\nlti_launch",
+            "reqd": 1
+        },
+        {
+            "default": "1",
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Is Active"
+        },
+        {
+            "fieldname": "tool_url",
+            "fieldtype": "Data",
+            "label": "Tool URL"
+        },
+        {
+            "fieldname": "mapping_schema",
+            "fieldtype": "Link",
+            "label": "Mapping Schema",
+            "options": "Competency Mapping Schema"
+        },
+        {
+            "fieldname": "pull_schedule",
+            "fieldtype": "Data",
+            "label": "Pull Schedule (cron)",
+            "description": "Cron expression for rest_pull mode (e.g. '0 */6 * * *')"
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "External Activity Config",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

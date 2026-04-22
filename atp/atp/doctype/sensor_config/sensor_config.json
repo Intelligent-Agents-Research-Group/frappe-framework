@@ -1,0 +1,85 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "sensor_type",
+        "display_name",
+        "is_active",
+        "confidence_weight",
+        "description",
+        "signal_schema"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Naming Series",
+            "options": "SENS-.####"
+        },
+        {
+            "fieldname": "sensor_type",
+            "fieldtype": "Data",
+            "label": "Sensor Type",
+            "reqd": 1,
+            "description": "e.g. facial_expression, voice_affect, blockly_event, physiological_sim"
+        },
+        {
+            "fieldname": "display_name",
+            "fieldtype": "Data",
+            "label": "Display Name",
+            "reqd": 1
+        },
+        {
+            "default": "1",
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Is Active"
+        },
+        {
+            "default": "0.8",
+            "fieldname": "confidence_weight",
+            "fieldtype": "Float",
+            "label": "Confidence Weight",
+            "description": "Applied to BKT update (0.0–1.0)"
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Small Text",
+            "label": "Description"
+        },
+        {
+            "fieldname": "signal_schema",
+            "fieldtype": "JSON",
+            "label": "Signal Schema",
+            "description": "JSON Schema for the signals field in SensorMessage"
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Sensor Config",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        },
+        {
+            "read": 1,
+            "report": 1,
+            "role": "ATP Educator"
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

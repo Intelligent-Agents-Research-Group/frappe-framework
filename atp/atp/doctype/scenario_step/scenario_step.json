@@ -1,0 +1,86 @@
+{
+    "actions": [],
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "istable": 1,
+    "field_order": [
+        "step_id",
+        "step_type",
+        "order",
+        "input_expected",
+        "input_type",
+        "situation_text",
+        "media_asset_url",
+        "modality_parameters",
+        "branch_conditions"
+    ],
+    "fields": [
+        {
+            "fieldname": "step_id",
+            "fieldtype": "Data",
+            "label": "Step ID",
+            "reqd": 1,
+            "in_list_view": 1,
+            "description": "Unique within this scenario, e.g. step_001"
+        },
+        {
+            "fieldname": "step_type",
+            "fieldtype": "Select",
+            "label": "Step Type",
+            "options": "situation\nquestion\ntask\nreflection\ndebrief",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "default": "0",
+            "fieldname": "order",
+            "fieldtype": "Int",
+            "label": "Order",
+            "in_list_view": 1
+        },
+        {
+            "default": "1",
+            "fieldname": "input_expected",
+            "fieldtype": "Check",
+            "label": "Input Expected"
+        },
+        {
+            "fieldname": "input_type",
+            "fieldtype": "Select",
+            "label": "Input Type",
+            "options": "text\nvoice\ncode\nnone"
+        },
+        {
+            "fieldname": "situation_text",
+            "fieldtype": "Text",
+            "label": "Situation Text"
+        },
+        {
+            "fieldname": "media_asset_url",
+            "fieldtype": "Data",
+            "label": "Media Asset URL"
+        },
+        {
+            "fieldname": "modality_parameters",
+            "fieldtype": "JSON",
+            "label": "Modality Parameters",
+            "description": "Per-agent parameters for this step (validated against TrainingModality.parameter_schema at publish)"
+        },
+        {
+            "fieldname": "branch_conditions",
+            "fieldtype": "JSON",
+            "label": "Branch Conditions",
+            "description": "JSON per branch-conditions.schema.json"
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Scenario Step",
+    "owner": "Administrator",
+    "permissions": [],
+    "sort_field": "order",
+    "sort_order": "ASC"
+}

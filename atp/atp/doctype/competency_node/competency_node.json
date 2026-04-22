@@ -1,0 +1,86 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "label",
+        "description",
+        "modality_type",
+        "mastery_threshold",
+        "bkt_params",
+        "parent_node"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Naming Series",
+            "options": "COMP-.####"
+        },
+        {
+            "fieldname": "label",
+            "fieldtype": "Data",
+            "label": "Label",
+            "reqd": 1
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Small Text",
+            "label": "Description"
+        },
+        {
+            "fieldname": "modality_type",
+            "fieldtype": "Select",
+            "label": "Modality Type",
+            "options": "\nnegotiation_single\nnegotiation_multi\ncollaboration\nvex_iq\npair_programming",
+            "reqd": 1
+        },
+        {
+            "default": "0.8",
+            "fieldname": "mastery_threshold",
+            "fieldtype": "Float",
+            "label": "Mastery Threshold"
+        },
+        {
+            "fieldname": "bkt_params",
+            "fieldtype": "JSON",
+            "label": "BKT Parameters",
+            "description": "JSON: {L0, T, S, G} — initial mastery, transit, slip, guess probabilities"
+        },
+        {
+            "fieldname": "parent_node",
+            "fieldtype": "Link",
+            "label": "Parent Node",
+            "options": "Competency Node"
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Competency Node",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "report": 1,
+            "role": "ATP Educator",
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

@@ -1,0 +1,85 @@
+{
+    "actions": [],
+    "autoname": "field:modality_type",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "modality_type",
+        "display_name",
+        "is_active",
+        "description",
+        "engine_directives",
+        "parameter_schema",
+        "session_state_template"
+    ],
+    "fields": [
+        {
+            "fieldname": "modality_type",
+            "fieldtype": "Data",
+            "label": "Modality Type",
+            "reqd": 1,
+            "unique": 1,
+            "description": "e.g. negotiation_single, vex_iq, pair_programming"
+        },
+        {
+            "fieldname": "display_name",
+            "fieldtype": "Data",
+            "label": "Display Name",
+            "reqd": 1
+        },
+        {
+            "default": "1",
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Is Active"
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Small Text",
+            "label": "Description"
+        },
+        {
+            "fieldname": "engine_directives",
+            "fieldtype": "Long Text",
+            "label": "Engine Directives",
+            "description": "System prompt template for the pedagogical agent. Supports {session_state}, {learner_state}, {scenario} template vars."
+        },
+        {
+            "fieldname": "parameter_schema",
+            "fieldtype": "JSON",
+            "label": "Parameter Schema",
+            "description": "JSON Schema for validating authored modality_parameters in ScenarioStep"
+        },
+        {
+            "fieldname": "session_state_template",
+            "fieldtype": "JSON",
+            "label": "Session State Template",
+            "description": "Initial session state object. Copied by engine at session start."
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Training Modality",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        },
+        {
+            "read": 1,
+            "report": 1,
+            "role": "ATP Educator"
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

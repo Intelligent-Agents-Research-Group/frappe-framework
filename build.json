@@ -7,7 +7,8 @@
         "atp/public/js/atp_settings.bundle.js",
         "atp/public/js/educator_dashboard.bundle.js",
         "atp/public/js/admin_dashboard.bundle.js",
-        "atp/public/js/educator_analytics.bundle.js"
+        "atp/public/js/educator_analytics.bundle.js",
+        "atp/public/js/atp_session.bundle.js"
     ],
     "output": {
         "atp/public/js/activity_builder.bundle.js": "atp/public/dist/js/activity_builder.bundle.js",
@@ -17,6 +18,7 @@
         "atp/public/js/atp_settings.bundle.js": "atp/public/dist/js/atp_settings.bundle.js",
         "atp/public/js/educator_dashboard.bundle.js": "atp/public/dist/js/educator_dashboard.bundle.js",
         "atp/public/js/admin_dashboard.bundle.js": "atp/public/dist/js/admin_dashboard.bundle.js",
-        "atp/public/js/educator_analytics.bundle.js": "atp/public/dist/js/educator_analytics.bundle.js"
+        "atp/public/js/educator_analytics.bundle.js": "atp/public/dist/js/educator_analytics.bundle.js",
+        "atp/public/js/atp_session.bundle.js": "atp/public/dist/js/atp_session.bundle.js"
     }
 }

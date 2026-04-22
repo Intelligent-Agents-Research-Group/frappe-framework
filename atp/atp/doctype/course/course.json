@@ -7,6 +7,7 @@
     "field_order": [
         "title",
         "is_published",
+        "linked_scenario",
         "thumbnail",
         "description",
         "flow_data",
@@ -25,6 +26,12 @@
             "fieldname": "is_published",
             "fieldtype": "Check",
             "label": "Is Published"
+        },
+        {
+            "fieldname": "linked_scenario",
+            "fieldtype": "Link",
+            "label": "Linked Training Scenario",
+            "options": "Training Scenario"
         },
         {
             "fieldname": "thumbnail",

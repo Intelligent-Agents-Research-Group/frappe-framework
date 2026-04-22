@@ -1,0 +1,112 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "title",
+        "modality",
+        "version",
+        "is_published",
+        "requires_pair",
+        "description",
+        "competency_nodes_section",
+        "competency_nodes",
+        "steps_section",
+        "steps"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Naming Series",
+            "options": "SCEN-.####"
+        },
+        {
+            "fieldname": "title",
+            "fieldtype": "Data",
+            "label": "Title",
+            "reqd": 1
+        },
+        {
+            "fieldname": "modality",
+            "fieldtype": "Link",
+            "label": "Modality",
+            "options": "Training Modality",
+            "reqd": 1
+        },
+        {
+            "default": "1.0.0",
+            "fieldname": "version",
+            "fieldtype": "Data",
+            "label": "Version"
+        },
+        {
+            "default": "0",
+            "fieldname": "is_published",
+            "fieldtype": "Check",
+            "label": "Is Published"
+        },
+        {
+            "default": "0",
+            "fieldname": "requires_pair",
+            "fieldtype": "Check",
+            "label": "Requires Pair (2 learners)"
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Small Text",
+            "label": "Description"
+        },
+        {
+            "fieldname": "competency_nodes_section",
+            "fieldtype": "Section Break",
+            "label": "Competency Nodes"
+        },
+        {
+            "fieldname": "competency_nodes",
+            "fieldtype": "Table",
+            "label": "Competency Nodes",
+            "options": "Scenario Competency Node"
+        },
+        {
+            "fieldname": "steps_section",
+            "fieldtype": "Section Break",
+            "label": "Steps"
+        },
+        {
+            "fieldname": "steps",
+            "fieldtype": "Table",
+            "label": "Steps",
+            "options": "Scenario Step"
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Training Scenario",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "report": 1,
+            "role": "ATP Educator",
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

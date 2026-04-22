@@ -1,0 +1,65 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "external_system_name",
+        "default_modality",
+        "version",
+        "mapping_rules"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Naming Series",
+            "options": "CMS-.####"
+        },
+        {
+            "fieldname": "external_system_name",
+            "fieldtype": "Data",
+            "label": "External System Name",
+            "reqd": 1
+        },
+        {
+            "fieldname": "default_modality",
+            "fieldtype": "Select",
+            "label": "Default Modality",
+            "options": "\nnegotiation_single\nnegotiation_multi\ncollaboration\nvex_iq\npair_programming"
+        },
+        {
+            "default": "1.0.0",
+            "fieldname": "version",
+            "fieldtype": "Data",
+            "label": "Version"
+        },
+        {
+            "fieldname": "mapping_rules",
+            "fieldtype": "JSON",
+            "label": "Mapping Rules",
+            "description": "Array of MappingRule objects per bridge-api.yaml"
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Competency Mapping Schema",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

@@ -19,6 +19,7 @@ const COMPONENT_GROUPS = [
 	{
 		label: 'AI & Agents',
 		items: [
+			{ type: 'Scenario', icon: '🎭', desc: 'AI Scenario' },
 			{ type: 'Virtual Agent', icon: '🤖', desc: 'AI Agent' },
 			{ type: 'Learner Model', icon: '🧠', desc: 'Adaptive' },
 		],

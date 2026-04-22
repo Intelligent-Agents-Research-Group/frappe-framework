@@ -1,0 +1,82 @@
+{
+    "actions": [],
+    "autoname": "hash",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "learner",
+        "competency_node",
+        "current_estimate",
+        "session_count",
+        "last_updated",
+        "history"
+    ],
+    "fields": [
+        {
+            "fieldname": "learner",
+            "fieldtype": "Link",
+            "label": "Learner",
+            "options": "Learner Profile",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "competency_node",
+            "fieldtype": "Link",
+            "label": "Competency Node",
+            "options": "Competency Node",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "default": "0.3",
+            "fieldname": "current_estimate",
+            "fieldtype": "Float",
+            "label": "Current Estimate (P(mastery))",
+            "in_list_view": 1
+        },
+        {
+            "default": "0",
+            "fieldname": "session_count",
+            "fieldtype": "Int",
+            "label": "Session Count"
+        },
+        {
+            "fieldname": "last_updated",
+            "fieldtype": "Datetime",
+            "label": "Last Updated"
+        },
+        {
+            "fieldname": "history",
+            "fieldtype": "JSON",
+            "label": "History",
+            "hidden": 1,
+            "description": "Array of {session_id, delta, source, timestamp}"
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Competency Record",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        },
+        {
+            "read": 1,
+            "report": 1,
+            "role": "ATP Educator"
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

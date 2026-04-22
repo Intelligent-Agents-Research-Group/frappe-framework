@@ -1,0 +1,89 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "session_a",
+        "session_b",
+        "puzzle",
+        "status",
+        "collaboration_balance",
+        "state"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Naming Series",
+            "options": "PAIR-.####"
+        },
+        {
+            "fieldname": "session_a",
+            "fieldtype": "Link",
+            "label": "Session A",
+            "options": "Training Session",
+            "reqd": 1
+        },
+        {
+            "fieldname": "session_b",
+            "fieldtype": "Link",
+            "label": "Session B",
+            "options": "Training Session",
+            "reqd": 1
+        },
+        {
+            "fieldname": "puzzle",
+            "fieldtype": "Link",
+            "label": "Blockly Puzzle",
+            "options": "Blockly Puzzle"
+        },
+        {
+            "default": "Active",
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Active\nCompleted"
+        },
+        {
+            "default": "0.0",
+            "fieldname": "collaboration_balance",
+            "fieldtype": "Float",
+            "label": "Collaboration Balance",
+            "description": "-1=B dominating, 0=balanced, +1=A dominating"
+        },
+        {
+            "fieldname": "state",
+            "fieldtype": "JSON",
+            "label": "State",
+            "hidden": 1,
+            "description": "PairProgrammingSessionState per pair-session-state.schema.json"
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Pair Session",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        },
+        {
+            "read": 1,
+            "report": 1,
+            "role": "ATP Educator"
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

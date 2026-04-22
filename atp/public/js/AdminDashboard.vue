@@ -239,9 +239,17 @@ const filteredUsers = computed(() => {
             <div class="card-body">
               <p class="card-title">{{ course.title }}</p>
               <div class="card-meta" style="display:flex;align-items:center;justify-content:space-between">
-                <span
-                  :class="['atp-badge', course.is_published ? 'atp-badge-completed' : 'atp-badge-notstarted']"
-                >{{ course.is_published ? 'Published' : 'Draft' }}</span>
+                <div style="display:flex;gap:0.3rem;flex-wrap:wrap">
+                  <span
+                    :class="['atp-badge', course.is_published ? 'atp-badge-completed' : 'atp-badge-notstarted']"
+                  >{{ course.is_published ? 'Published' : 'Draft' }}</span>
+                  <span
+                    v-if="course.linked_scenario"
+                    class="atp-badge"
+                    style="background:#ede9fe;color:#6d28d9;font-size:0.68rem"
+                    :title="'Scenario: ' + course.linked_scenario"
+                  >⚡ Scenario</span>
+                </div>
                 <span v-if="course.enrollment_count > 0" style="font-size:0.72rem;color:var(--atp-gray-500)">
                   {{ course.enrollment_count }} student{{ course.enrollment_count !== 1 ? 's' : '' }}
                 </span>

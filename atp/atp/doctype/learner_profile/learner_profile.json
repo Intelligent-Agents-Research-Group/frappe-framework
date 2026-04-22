@@ -1,0 +1,84 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "user",
+        "display_name",
+        "external_id",
+        "last_session",
+        "competency_summary"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Naming Series",
+            "options": "LRN-.####"
+        },
+        {
+            "fieldname": "user",
+            "fieldtype": "Link",
+            "label": "User",
+            "options": "User",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "display_name",
+            "fieldtype": "Data",
+            "label": "Display Name"
+        },
+        {
+            "fieldname": "external_id",
+            "fieldtype": "Data",
+            "label": "External ID"
+        },
+        {
+            "fieldname": "last_session",
+            "fieldtype": "Link",
+            "label": "Last Session",
+            "options": "Training Session"
+        },
+        {
+            "fieldname": "competency_summary",
+            "fieldtype": "JSON",
+            "label": "Competency Summary",
+            "hidden": 1
+        }
+    ],
+    "links": [],
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "Learner Profile",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "role": "ATP Educator",
+            "write": 1
+        },
+        {
+            "read": 1,
+            "role": "ATP Student"
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

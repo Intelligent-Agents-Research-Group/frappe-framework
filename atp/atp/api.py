@@ -219,7 +219,7 @@ def get_educator_courses():
 
 	courses = frappe.db.get_list(
 		"Course",
-		fields=["name", "title", "thumbnail", "description", "is_published"],
+		fields=["name", "title", "thumbnail", "description", "is_published", "linked_scenario"],
 		order_by="modified desc",
 	)
 
@@ -528,7 +528,7 @@ def get_all_courses_admin():
 	_require_admin()
 	courses = frappe.db.get_list(
 		"Course",
-		fields=["name", "title", "thumbnail", "is_published", "owner"],
+		fields=["name", "title", "thumbnail", "is_published", "owner", "linked_scenario"],
 		order_by="modified desc",
 	)
 	for c in courses:

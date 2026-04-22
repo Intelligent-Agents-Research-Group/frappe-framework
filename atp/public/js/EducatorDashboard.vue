@@ -146,6 +146,12 @@ const goToSettings = () => frappe.set_route('atp_settings');
                     course.is_published ? 'atp-badge-completed' : 'atp-badge-notstarted']"
                 >{{ course.is_published ? 'Published' : 'Draft' }}</span>
                 <span
+                  v-if="course.linked_scenario"
+                  class="atp-badge"
+                  style="background:#ede9fe;color:#6d28d9;font-size:0.68rem"
+                  :title="'Scenario: ' + course.linked_scenario"
+                >⚡ Scenario</span>
+                <span
                   v-if="course.enrollment_count > 0"
                   style="font-size:0.72rem;color:var(--atp-gray-500)"
                 >{{ course.enrollment_count }} student{{ course.enrollment_count !== 1 ? 's' : '' }}</span>

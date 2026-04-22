@@ -1,0 +1,18 @@
+{
+    "creation": "2026-04-20 00:00:00.000000",
+    "doctype": "Page",
+    "modified": "2026-04-20 00:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Atp",
+    "name": "atp_session",
+    "owner": "Administrator",
+    "page_name": "atp_session",
+    "roles": [
+        {"role": "ATP Student"},
+        {"role": "ATP Educator"},
+        {"role": "System Manager"}
+    ],
+    "script": "",
+    "standard": "Yes",
+    "title": "Training Session"
+}
