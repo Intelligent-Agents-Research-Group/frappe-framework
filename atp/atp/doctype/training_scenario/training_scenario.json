@@ -8,6 +8,7 @@
         "naming_series",
         "title",
         "modality",
+        "agent_character",
         "version",
         "is_published",
         "requires_pair",
@@ -36,6 +37,12 @@
             "label": "Modality",
             "options": "Training Modality",
             "reqd": 1
+        },
+        {
+            "fieldname": "agent_character",
+            "fieldtype": "Link",
+            "label": "Agent Character",
+            "options": "Agent Character"
         },
         {
             "default": "1.0.0",

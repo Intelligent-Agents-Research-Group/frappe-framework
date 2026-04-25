@@ -10,6 +10,9 @@ logger = logging.getLogger(__name__)
 
 class TrainingSession(Document):
     def on_submit(self):
+        # Session start (engine call + opening utterance) is handled by
+        # api_v2.create_and_submit_session(), which is the only call path for
+        # learner-initiated sessions. This hook only handles the Frappe-side state.
         self._ensure_learner_profile()
         self._set_started_at()
 
@@ -26,35 +29,6 @@ class TrainingSession(Document):
             "started_at": datetime.utcnow(),
             "status": "Active",
         })
-
-    def _emit_session_start(self):
-        """
-        POST session/start to the Pedagogical Engine.
-        Non-blocking: logs a warning if the engine is unreachable so the session
-        still submits successfully in Frappe.
-        """
-        import httpx
-        from atp.atp.api_v2 import _get_engine_url
-
-        scenario = frappe.get_doc("Training Scenario", self.scenario)
-        payload = {
-            "session_id": self.name,
-            "learner_id": self.learner,
-            "scenario_id": self.scenario,
-            "scenario_version": self.scenario_version or "1.0.0",
-            "delivery_mode": self.delivery_mode or "web_2d",
-        }
-        try:
-            resp = httpx.post(
-                f"{_get_engine_url()}/session/start",
-                json=payload,
-                timeout=5.0,
-                headers=_engine_auth_headers(),
-            )
-            resp.raise_for_status()
-        except Exception as e:
-            logger.warning("Pedagogical Engine unreachable on session submit: %s", e)
-            frappe.log_error(title="ATP Engine Unreachable", message=str(e))
 
     def _emit_session_end(self, end_reason: str):
         import httpx

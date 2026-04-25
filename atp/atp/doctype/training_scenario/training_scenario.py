@@ -27,11 +27,25 @@ class TrainingScenario(Document):
             frappe.throw("A published scenario must include a debrief step")
 
     def get_full_scenario(self) -> dict:
-        """Return full scenario data including all steps and competency nodes."""
+        """Return full scenario data including steps, competency nodes, and character."""
         scenario = self.as_dict()
         scenario["steps"] = sorted(
             [s.as_dict() for s in self.steps],
             key=lambda x: x.get("order", 0),
         )
         scenario["competency_nodes"] = [cn.as_dict() for cn in self.competency_nodes]
+        if self.agent_character:
+            try:
+                char = frappe.get_doc("Agent Character", self.agent_character)
+                scenario["agent_character_data"] = {
+                    "name": char.name,
+                    "display_name": char.display_name or "",
+                    "instructional_role": char.instructional_role or "",
+                    "persona_description": char.persona_description or "",
+                    "default_modality_parameters": char.default_modality_parameters or {},
+                }
+            except Exception:
+                scenario["agent_character_data"] = {}
+        else:
+            scenario["agent_character_data"] = {}
         return scenario

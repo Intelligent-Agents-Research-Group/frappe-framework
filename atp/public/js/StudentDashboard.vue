@@ -189,6 +189,12 @@ const goSettings = () => {
 	frappe.set_route('atp_settings');
 };
 
+const logout = () => {
+	frappe.call({ method: 'logout' }).then(() => {
+		window.location.href = '/login';
+	});
+};
+
 onMounted(() => {
 	init();
 });
@@ -297,6 +303,7 @@ defineExpose({ init });
 					<div class="atp-profile-links">
 						<a @click.prevent="activeFilter = 'completed'">Completed Activities</a>
 						<a @click.prevent="goSettings">Settings</a>
+						<a @click.prevent="logout">Sign Out</a>
 					</div>
 				</div>
 			</div>

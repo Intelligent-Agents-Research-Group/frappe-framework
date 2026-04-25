@@ -31,7 +31,7 @@ class CompetencyRecord(Document):
             "source": "native",
             "timestamp": self.last_updated.isoformat(),
         })
-        self.history = history
+        self.history = json.dumps(history)
         self.save(ignore_permissions=True)
         return self.current_estimate
 
@@ -53,7 +53,7 @@ class CompetencyRecord(Document):
             "competency_node": competency_node_id,
             "current_estimate": params["L0"],
             "session_count": 0,
-            "history": [],
+            "history": "[]",
         })
         rec.insert(ignore_permissions=True)
         frappe.db.commit()

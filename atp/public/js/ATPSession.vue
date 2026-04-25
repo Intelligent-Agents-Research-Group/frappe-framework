@@ -188,8 +188,6 @@
 <script>
 import { createApp, ref, computed, nextTick, onMounted } from "vue";
 
-const ENGINE_BASE = "http://localhost:8010";
-
 export default {
   name: "ATPSession",
   props: {
@@ -262,19 +260,6 @@ export default {
       return data.message;
     }
 
-    async function enginePost(path, body) {
-      const resp = await fetch(`${ENGINE_BASE}${path}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (!resp.ok) {
-        const err = await resp.json().catch(() => ({}));
-        throw new Error(err?.error?.message || `Engine error ${resp.status}`);
-      }
-      return resp.json();
-    }
-
     async function loadScenarios() {
       loadingScenarios.value = true;
       try {
@@ -299,7 +284,7 @@ export default {
         const scenario = scenarios.value.find((s) => s.name === selectedScenario.value);
         scenarioTitle.value = scenario?.title || selectedScenario.value;
 
-        await connectToEngine(result.session_id, result.learner_id);
+        await connectToEngine(result.session_id, result.opening_agent_responses);
       } catch (e) {
         selectError.value = "Failed to start session: " + e.message;
       } finally {
@@ -307,23 +292,24 @@ export default {
       }
     }
 
-    async function connectToEngine(sessId, lrnId) {
+    async function connectToEngine(sessId, openingResponses) {
       try {
-        const resp = await fetch(`${ENGINE_BASE}/learner/state/${sessId}`);
-        if (resp.ok) {
-          const state = await resp.json();
-          applyLearnerState(state);
-        }
-      } catch (_) {
-        // Engine may not have state yet — that's OK
-      }
+        const state = await frappeCall("atp.atp.api_v2.get_learner_state", { session_id: sessId });
+        applyLearnerState(state);
+      } catch (_) {}
 
       view.value = "session";
 
-      messages.value.push({
-        role: "system",
-        text: "Session started. The scenario is loading…",
-      });
+      for (const ar of openingResponses || []) {
+        messages.value.push({
+          role: "agent",
+          speaker: ar.character_id || "Agent",
+          text: ar.spoken_text,
+          expression: ar.nonverbal_cues?.expression,
+          competencyUpdates: [],
+          intervention: null,
+        });
+      }
 
       await scrollToBottom();
     }
@@ -353,13 +339,13 @@ export default {
       const turnId = `turn_${Date.now()}`;
 
       try {
-        const resp = await enginePost("/session/turn", {
+        const resp = await frappeCall("atp.atp.api_v2.session_turn", {
           session_id: sessionId.value,
           learner_id: learnerId.value,
           turn_id: turnId,
-          turn_type: "conversational",
           learner_input: input,
           input_modality: "text",
+          turn_type: "conversational",
           timestamp: new Date().toISOString(),
         });
 
@@ -394,7 +380,7 @@ export default {
         // Update affective state from the engine's learner state
         if (resp.session_status !== "debrief_ready") {
           try {
-            const state = await fetch(`${ENGINE_BASE}/learner/state/${sessionId.value}`).then((r) => r.json());
+            const state = await frappeCall("atp.atp.api_v2.get_learner_state", { session_id: sessionId.value });
             applyLearnerState(state);
           } catch (_) {}
         }
@@ -410,7 +396,7 @@ export default {
 
     async function endSession() {
       try {
-        const resp = await enginePost("/session/end", {
+        const resp = await frappeCall("atp.atp.api_v2.session_end", {
           session_id: sessionId.value,
           learner_id: learnerId.value,
           end_reason: "completed",

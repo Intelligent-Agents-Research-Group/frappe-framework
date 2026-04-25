@@ -1,0 +1,181 @@
+[
+ {
+  "agent_character": "CHAR-0002",
+  "competency_nodes": [
+   {
+    "competency_node": "COMP-0007",
+    "label": "Empathic Opening",
+    "weight": 1.0
+   },
+   {
+    "competency_node": "COMP-0008",
+    "label": "Specific Behavior Focus",
+    "weight": 1.0
+   },
+   {
+    "competency_node": "COMP-0009",
+    "label": "Impact Articulation",
+    "weight": 1.0
+   },
+   {
+    "competency_node": "COMP-0010",
+    "label": "Active Listening",
+    "weight": 1.0
+   },
+   {
+    "competency_node": "COMP-0011",
+    "label": "Collaborative Problem Solving",
+    "weight": 1.0
+   }
+  ],
+  "description": "You are a manager who needs to address repeated deadline misses with a team member. Practice giving specific, empathetic feedback that leads to collaborative problem-solving.",
+  "docstatus": 0,
+  "doctype": "Training Scenario",
+  "is_published": 1,
+  "modality": "negotiation_single",
+  "modified": "2026-04-24 00:26:12.403575",
+  "name": "SCEN-0002",
+  "naming_series": "SCEN-.####",
+  "requires_pair": 0,
+  "steps": [
+   {
+    "branch_conditions": "[]",
+    "input_expected": 0,
+    "input_type": "none",
+    "media_asset_url": null,
+    "modality_parameters": null,
+    "order": 1,
+    "situation_text": "You've called a 1:1 with Alex Rivera. Over the past two months, Alex has missed three sprint commitments. The team is starting to feel the impact. This is a critical conversation — Alex is talented but the pattern needs to change.",
+    "step_id": "opening",
+    "step_type": "situation"
+   },
+   {
+    "branch_conditions": "[{\"predicate\": {\"type\": \"consecutive_errors\", \"min_count\": 3}, \"next_step_id\": \"intervention\"}, {\"predicate\": {\"type\": \"turn_count_above\", \"threshold\": 8}, \"next_step_id\": \"debrief\"}]",
+    "input_expected": 1,
+    "input_type": "text",
+    "media_asset_url": null,
+    "modality_parameters": null,
+    "order": 2,
+    "situation_text": "Alex just sat down. The meeting has started.",
+    "step_id": "conversation",
+    "step_type": "question"
+   },
+   {
+    "branch_conditions": "[{\"predicate\": {\"type\": \"always\"}, \"next_step_id\": \"conversation\"}]",
+    "input_expected": 1,
+    "input_type": "text",
+    "media_asset_url": null,
+    "modality_parameters": null,
+    "order": 3,
+    "situation_text": "Coaching moment: Alex is becoming defensive. Try to refocus on specific behaviors and their impact rather than general criticism.",
+    "step_id": "intervention",
+    "step_type": "reflection"
+   },
+   {
+    "branch_conditions": "[]",
+    "input_expected": 0,
+    "input_type": "none",
+    "media_asset_url": null,
+    "modality_parameters": null,
+    "order": 4,
+    "situation_text": "The conversation has concluded. Time to reflect on how it went.",
+    "step_id": "debrief",
+    "step_type": "debrief"
+   }
+  ],
+  "title": "Difficult Conversation: Giving Constructive Feedback",
+  "version": "1.0.0"
+ },
+ {
+  "agent_character": "CHAR-0001",
+  "competency_nodes": [
+   {
+    "competency_node": "COMP-0001",
+    "label": "BATNA Identification",
+    "weight": 1.0
+   },
+   {
+    "competency_node": "COMP-0002",
+    "label": "Opening Anchor",
+    "weight": 1.0
+   },
+   {
+    "competency_node": "COMP-0003",
+    "label": "Interest Probing",
+    "weight": 1.0
+   },
+   {
+    "competency_node": "COMP-0004",
+    "label": "Concession Strategy",
+    "weight": 1.0
+   },
+   {
+    "competency_node": "COMP-0005",
+    "label": "ZOPA Recognition",
+    "weight": 1.0
+   },
+   {
+    "competency_node": "COMP-0006",
+    "label": "Closing Technique",
+    "weight": 1.0
+   }
+  ],
+  "description": "Negotiate a senior software engineer job offer with Jordan Chen, HR Manager at TechCorp. Practice anchoring, interest probing, and strategic concessions.",
+  "docstatus": 0,
+  "doctype": "Training Scenario",
+  "is_published": 1,
+  "modality": "negotiation_single",
+  "modified": "2026-04-24 00:26:11.801082",
+  "name": "SCEN-0001",
+  "naming_series": "SCEN-.####",
+  "requires_pair": 0,
+  "steps": [
+   {
+    "branch_conditions": "{\"default_next_step\":\"step_002_exploration\",\"conditions\":[{\"condition_id\":\"branch_anchored_early\",\"label\":\"Learner anchored assertively\",\"next_step\":\"step_002_exploration\",\"predicate\":{\"type\":\"session_state\",\"state_path\":\"$.learner_anchored_first\",\"operator\":\"is_true\",\"value\":null}}]}",
+    "input_expected": 1,
+    "input_type": "text",
+    "media_asset_url": null,
+    "modality_parameters": "{\"batna\":\"Move on to the next candidate in the pipeline (2 strong alternates identified)\",\"aspiration_point\":\"$95,000 salary with on-site 5 days/week\",\"resistance_point\":\"$118,000 salary with 3 days remote\",\"opening_anchor\":\"$92,000 with standard benefits and on-site requirement\",\"concession_strategy\":\"decreasing_increments\",\"priorities\":[\"base_salary\",\"remote_flexibility\",\"start_date\",\"equity\"],\"emotional_profile\":\"firm_professional\",\"context_background\":\"Has been trying to fill this role for 3 months and is under pressure. Team needs someone quickly but budget is constrained.\"}",
+    "order": 1,
+    "situation_text": "You've just received a job offer from TechCorp for a Senior Software Engineer position. Jordan Chen, the HR Manager, is ready to discuss the details. The posted range was $95,000–$120,000. Your research shows the market rate is $118,000–$135,000 for your level of experience. Jordan opens with: 'We're really excited about you joining the team. We'd like to offer you $92,000 with our standard benefits package. What are your thoughts?'",
+    "step_id": "step_001_opening",
+    "step_type": "situation"
+   },
+   {
+    "branch_conditions": "{\"default_next_step\":\"step_003_bargaining\",\"conditions\":[{\"condition_id\":\"branch_low_mastery\",\"label\":\"Low mastery \\u2014 needs coaching\",\"next_step\":\"step_003_bargaining\",\"predicate\":{\"type\":\"turn_assessment\",\"operator\":\"lt\",\"value\":0}},{\"condition_id\":\"branch_high_frustration\",\"label\":\"High frustration\",\"next_step\":\"step_003_bargaining\",\"predicate\":{\"type\":\"affective\",\"affective_dimension\":\"frustration\",\"operator\":\"gt\",\"value\":0.7}}]}",
+    "input_expected": 1,
+    "input_type": "text",
+    "media_asset_url": null,
+    "modality_parameters": "{\"batna\":\"Move on to the next candidate in the pipeline (2 strong alternates identified)\",\"aspiration_point\":\"$95,000 salary with on-site 5 days/week\",\"resistance_point\":\"$118,000 salary with 3 days remote\",\"opening_anchor\":\"$92,000 with standard benefits and on-site requirement\",\"concession_strategy\":\"decreasing_increments\",\"priorities\":[\"base_salary\",\"remote_flexibility\",\"start_date\",\"equity\"],\"emotional_profile\":\"firm_professional\",\"context_background\":\"Has been trying to fill this role for 3 months and is under pressure. Team needs someone quickly but budget is constrained.\"}",
+    "order": 2,
+    "situation_text": "The negotiation continues. Jordan responds to your opening position. Explore interests, ask clarifying questions, and work toward an agreement.",
+    "step_id": "step_002_exploration",
+    "step_type": "question"
+   },
+   {
+    "branch_conditions": "{\"default_next_step\":\"debrief\",\"conditions\":[{\"condition_id\":\"branch_to_debrief_on_close\",\"label\":\"Move to debrief\",\"next_step\":\"debrief\",\"predicate\":{\"type\":\"session_state\",\"state_path\":\"$.phase\",\"operator\":\"eq\",\"value\":\"closing\"}}]}",
+    "input_expected": 1,
+    "input_type": "text",
+    "media_asset_url": null,
+    "modality_parameters": "{\"batna\":\"Move on to the next candidate in the pipeline (2 strong alternates identified)\",\"aspiration_point\":\"$95,000 salary with on-site 5 days/week\",\"resistance_point\":\"$118,000 salary with 3 days remote\",\"opening_anchor\":\"$92,000 with standard benefits and on-site requirement\",\"concession_strategy\":\"decreasing_increments\",\"priorities\":[\"base_salary\",\"remote_flexibility\",\"start_date\",\"equity\"],\"emotional_profile\":\"firm_professional\",\"context_background\":\"Has been trying to fill this role for 3 months and is under pressure. Team needs someone quickly but budget is constrained.\"}",
+    "order": 3,
+    "situation_text": "You're in the bargaining phase. Make strategic concessions and work toward a deal that meets your interests. Remember your BATNA.",
+    "step_id": "step_003_bargaining",
+    "step_type": "task"
+   },
+   {
+    "branch_conditions": "{\"default_next_step\":\"debrief\"}",
+    "input_expected": 0,
+    "input_type": "none",
+    "media_asset_url": null,
+    "modality_parameters": "{}",
+    "order": 4,
+    "situation_text": "Session complete. Review your negotiation performance.",
+    "step_id": "debrief",
+    "step_type": "debrief"
+   }
+  ],
+  "title": "Salary Negotiation: Software Engineer Offer",
+  "version": "1.0.0"
+ }
+]

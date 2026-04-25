@@ -1,8 +1,6 @@
 <script>
 import { ref, computed, nextTick, onMounted } from "vue";
 
-const ENGINE_BASE = "http://localhost:8010";
-
 export default {
   name: "ScenarioPlayer",
   props: {
@@ -65,19 +63,6 @@ export default {
       return data.message;
     }
 
-    async function enginePost(path, body) {
-      const resp = await fetch(`${ENGINE_BASE}${path}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (!resp.ok) {
-        const err = await resp.json().catch(() => ({}));
-        throw new Error(err?.detail || err?.error?.message || `Engine error ${resp.status}`);
-      }
-      return resp.json();
-    }
-
     function applyLearnerState(state) {
       if (state.competency_estimates) competencyEstimates.value = state.competency_estimates;
       if (state.affective_state) affectiveState.value = state.affective_state;
@@ -112,10 +97,10 @@ export default {
         sessionId.value = result.session_id;
         learnerId.value = result.learner_id;
 
-        // Fetch initial learner state from engine
+        // Fetch initial learner state via server-side proxy
         try {
-          const resp = await fetch(`${ENGINE_BASE}/learner/state/${result.session_id}`);
-          if (resp.ok) applyLearnerState(await resp.json());
+          const state = await frappeCall("atp.atp.api_v2.get_learner_state", { session_id: result.session_id });
+          applyLearnerState(state);
         } catch {}
 
         view.value = "session";
@@ -156,13 +141,13 @@ export default {
       turnCount.value++;
       const turnId = `turn_${Date.now()}`;
       try {
-        const resp = await enginePost("/session/turn", {
+        const resp = await frappeCall("atp.atp.api_v2.session_turn", {
           session_id: sessionId.value,
           learner_id: learnerId.value,
           turn_id: turnId,
-          turn_type: "conversational",
           learner_input: input,
           input_modality: "text",
+          turn_type: "conversational",
           timestamp: new Date().toISOString(),
         });
         agentTyping.value = false;
@@ -186,7 +171,7 @@ export default {
         sessionStatus.value = resp.session_status || "in_progress";
         if (resp.session_status !== "debrief_ready") {
           try {
-            const state = await fetch(`${ENGINE_BASE}/learner/state/${sessionId.value}`).then((r) => r.json());
+            const state = await frappeCall("atp.atp.api_v2.get_learner_state", { session_id: sessionId.value });
             applyLearnerState(state);
           } catch {}
         }
@@ -203,7 +188,7 @@ export default {
 
     async function endSession() {
       try {
-        const resp = await enginePost("/session/end", {
+        const resp = await frappeCall("atp.atp.api_v2.session_end", {
           session_id: sessionId.value,
           learner_id: learnerId.value,
           end_reason: "completed",

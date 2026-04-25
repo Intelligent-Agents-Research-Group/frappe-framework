@@ -250,5 +250,7 @@ after_request = ["atp.atp.api.atp_post_login_redirect"]
 # --------
 fixtures = [
     {"doctype": "Role", "filters": [["name", "in", ["ATP Educator", "ATP Student"]]]},
+    {"doctype": "Agent Character", "filters": [["name", "in", ["CHAR-0001", "CHAR-0002"]]]},
+    {"doctype": "Training Scenario", "filters": [["name", "in", ["SCEN-0001", "SCEN-0002"]]]},
 ]
 

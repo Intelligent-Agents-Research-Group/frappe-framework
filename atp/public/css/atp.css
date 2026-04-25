@@ -807,7 +807,7 @@ textarea.form-control:focus {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .atp-profile-panel {
+  .dash-profile {
     display: none;
   }
 
@@ -862,23 +862,28 @@ textarea.form-control:focus {
   background: var(--atp-gray-100) !important;
 }
 
-[data-theme="dark"] .desk-sidebar .sidebar-menu li a {
+[data-theme="dark"] .body-sidebar .sidebar-menu li a {
   color: var(--atp-gray-700) !important;
 }
 
-[data-theme="dark"] .desk-sidebar .sidebar-menu li.active a {
+[data-theme="dark"] .body-sidebar .sidebar-menu li.active a {
   color: var(--atp-blue) !important;
   border-left-color: var(--atp-blue) !important;
 }
 
 /* ── ATP Full-Page Mode (hide Frappe chrome on ATP pages) ───── */
+body.atp-full-page .sticky-top {
+  display: none !important;
+}
+
 body.atp-full-page .navbar,
 body.atp-full-page #navbar {
   display: none !important;
 }
 
-body.atp-full-page .desk-sidebar,
-body.atp-full-page #sidebar-wrapper {
+body.atp-full-page .body-sidebar-container,
+body.atp-full-page .body-sidebar,
+body.atp-full-page .body-sidebar-placeholder {
   display: none !important;
 }
 

@@ -10,6 +10,8 @@
         "turn_id",
         "sequence_number",
         "written_by",
+        "trigger_source",
+        "rmq_routing_key",
         "timestamp",
         "event_data"
     ],
@@ -47,6 +49,17 @@
             "fieldtype": "Select",
             "label": "Written By",
             "options": "engine\nlogger\nbridge\nfrappe"
+        },
+        {
+            "fieldname": "trigger_source",
+            "fieldtype": "Select",
+            "label": "Trigger Source",
+            "options": "engine\nbridge\nfrappe\nsensor"
+        },
+        {
+            "fieldname": "rmq_routing_key",
+            "fieldtype": "Data",
+            "label": "RMQ Routing Key"
         },
         {
             "fieldname": "timestamp",

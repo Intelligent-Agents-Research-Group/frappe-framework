@@ -169,6 +169,78 @@ def create_and_submit_session(scenario_id: str) -> dict:
     }
 
 
+@frappe.whitelist()
+def get_learner_state(session_id: str) -> dict:
+    """Proxy GET /learner/state/{session_id} to the Pedagogical Engine."""
+    import httpx
+    from atp.atp.doctype.training_session.training_session import _engine_auth_headers
+    resp = httpx.get(
+        f"{_get_engine_url()}/learner/state/{session_id}",
+        timeout=10.0,
+        headers=_engine_auth_headers(),
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
+@frappe.whitelist()
+def session_turn(
+    session_id: str,
+    learner_id: str,
+    turn_id: str,
+    learner_input: str,
+    input_modality: str = "text",
+    turn_type: str = "conversational",
+    timestamp: str = "",
+) -> dict:
+    """Proxy POST /session/turn to the Pedagogical Engine."""
+    import httpx
+    from atp.atp.doctype.training_session.training_session import _engine_auth_headers
+    resp = httpx.post(
+        f"{_get_engine_url()}/session/turn",
+        json={
+            "session_id": session_id,
+            "learner_id": learner_id,
+            "turn_id": turn_id,
+            "learner_input": learner_input,
+            "input_modality": input_modality,
+            "turn_type": turn_type,
+            "timestamp": timestamp,
+        },
+        timeout=60.0,
+        headers=_engine_auth_headers(),
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
+@frappe.whitelist()
+def session_end(
+    session_id: str,
+    learner_id: str,
+    end_reason: str = "completed",
+    learner_initiated: bool = True,
+) -> dict:
+    """Proxy POST /session/end to the Pedagogical Engine."""
+    import httpx
+    from atp.atp.doctype.training_session.training_session import _engine_auth_headers
+    resp = httpx.post(
+        f"{_get_engine_url()}/session/end",
+        json={
+            "session_id": session_id,
+            "learner_id": learner_id,
+            "end_reason": end_reason,
+        },
+        timeout=15.0,
+        headers=_engine_auth_headers(),
+    )
+    resp.raise_for_status()
+    new_status = "Completed" if end_reason == "completed" else "Abandoned"
+    frappe.db.set_value("Training Session", session_id, "status", new_status)
+    frappe.db.commit()
+    return resp.json()
+
+
 # ── Session Events ────────────────────────────────────────────────────────────
 
 @frappe.whitelist(allow_guest=False)
@@ -178,6 +250,8 @@ def write_session_event(
     event_data: str | dict,
     turn_id: str | None = None,
     written_by: str = "engine",
+    trigger_source: str = "engine",
+    rmq_routing_key: str = "",
 ) -> dict:
     """Write a SessionEvent record. Called by the Pedagogical Engine."""
     if not frappe.db.exists("Training Session", session_id):
@@ -190,6 +264,7 @@ def write_session_event(
             pass
 
     seq = (frappe.db.count("Session Event", {"session": session_id}) or 0) + 1
+    turn_seq = (frappe.db.count("Session Event", {"session": session_id, "event_type": "turn"}) or 0) + 1 if event_type == "turn" else None
 
     event = frappe.get_doc({
         "doctype": "Session Event",
@@ -198,13 +273,16 @@ def write_session_event(
         "turn_id": turn_id,
         "sequence_number": seq,
         "written_by": written_by,
+        "trigger_source": trigger_source,
+        "rmq_routing_key": rmq_routing_key,
         "timestamp": datetime.utcnow(),
         "event_data": event_data,
     })
     event.insert(ignore_permissions=True)
     frappe.db.commit()
 
-    frappe.db.set_value("Training Session", session_id, "turn_count", seq)
+    if turn_seq is not None:
+        frappe.db.set_value("Training Session", session_id, "turn_count", turn_seq)
     return {"event_id": event.name, "sequence_number": seq}
 
 
@@ -240,7 +318,7 @@ def update_competency_record(
         "source": "native",
         "timestamp": record.last_updated.isoformat(),
     })
-    record.history = history
+    record.history = json.dumps(history)
     record.save(ignore_permissions=True)
     frappe.db.commit()
 
@@ -249,6 +327,38 @@ def update_competency_record(
         "previous_estimate": previous,
         "new_estimate": record.current_estimate,
     }
+
+
+# ── Bridge / External integrations ───────────────────────────────────────────
+
+@frappe.whitelist(allow_guest=False)
+def get_competency_mapping_schema(source_name: str) -> dict:
+    """Return a CompetencyMappingSchema by external_system_name."""
+    name = frappe.db.get_value(
+        "Competency Mapping Schema", {"external_system_name": source_name}, "name"
+    )
+    if not name:
+        frappe.throw(
+            f"Competency Mapping Schema for source '{source_name}' not found",
+            frappe.DoesNotExistError,
+        )
+    doc = frappe.get_doc("Competency Mapping Schema", name)
+    return {
+        "name": doc.name,
+        "external_system_name": doc.external_system_name,
+        "version": doc.version or "1.0",
+        "mapping_rules": doc.mapping_rules if isinstance(doc.mapping_rules, list) else (
+            json.loads(doc.mapping_rules) if doc.mapping_rules else []
+        ),
+    }
+
+
+@frappe.whitelist(allow_guest=False)
+def get_learner_id_by_email(email: str) -> dict:
+    """Return learner_id for the given user email, creating a profile if needed."""
+    from atp.atp.doctype.learner_profile.learner_profile import LearnerProfile
+    profile = LearnerProfile.get_or_create_for_user(email)
+    return {"learner_id": profile.name}
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────

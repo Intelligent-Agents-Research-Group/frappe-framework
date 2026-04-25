@@ -24,11 +24,16 @@ class CompetencyMappingSchema(Document):
 
 
 def _extract_value(payload: dict, path: str):
-    """Simple $ JSONPath resolver for top-level fields."""
-    if path.startswith("$."):
-        key = path[2:]
-        return payload.get(key)
-    return None
+    """Simple dotted-path resolver for `$.a.b.c` style paths."""
+    if not path.startswith("$."):
+        return None
+    parts = path[2:].split(".")
+    value = payload
+    for part in parts:
+        if not isinstance(value, dict):
+            return None
+        value = value.get(part)
+    return value
 
 
 def _apply_transform(value: float, transform: dict) -> float:
